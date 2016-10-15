@@ -1,0 +1,77 @@
+<link rel="import" href="/bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="/bower_components/iron-pages/iron-pages.html">
+
+<!--
+
+usage:
+
+<easy-paper-tabs>
+  <paper-tab>TAB 1</paper-tab>
+  <paper-tab>TAB 2</paper-tab>
+  <div class="page">Page 1</div>
+  <div class="page">Page 2</div>
+</easy-paper-tabs>
+
+you can also use the selected attribute:
+
+<blaktip-paper-tabs selected="1">
+  <paper-tab>TAB 1</paper-tab>
+  <paper-tab>TAB 2</paper-tab>
+  <div class="page">Page 1</div>
+  <div class="page">Page 2 is selected first!</div>
+</blaktip-paper-tabs>
+
+I think you could also set the selected attribute programatically, but I haven't tested this.
+
+set the background and foreground colours of the tabs like this:
+
+<style is="custom-style">
+  blaktip-paper-tabs {
+    --tabs-background-colour: blue;
+    --tabs-colour: yellow;
+  }
+</style>
+
+-->
+
+<dom-module id="blaktip-paper-tabs">
+  
+  <template>
+    
+    <style>
+      :host {
+        display: block;
+      }
+      paper-tabs {
+        background-color: black;
+        --paper-tabs-selection-bar-color: var(--tabs-colour, white);
+        color: var(--tabs-colour, white);
+      }
+    </style>
+
+    <paper-tabs selected="{{selected}}" scrollable>
+      <content select="paper-tab"></content>
+    </paper-tabs>
+
+    <iron-pages selected="{{selected}}">
+      <content selected=".page"></content>
+    </iron-pages>
+
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: "blaktip-paper-tabs",
+      properties: {
+        selected: {
+          type: Number,
+          value: 0,
+          notify: true,
+          reflectToAttribute: true
+        }
+      }
+    });
+  </script>
+
+</dom-module>
