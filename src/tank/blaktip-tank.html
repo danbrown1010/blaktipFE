@@ -1,0 +1,178 @@
+
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+
+<link rel="import" href="../measurements/blaktip-temperature.html">
+<link rel="import" href="../measurements/blaktip-ph.html">
+<link rel="import" href="../measurements/blaktip-specgrav.html">
+<link rel="import" href="../measurements/blaktip-alkalinity.html">
+<link rel="import" href="../measurements/blaktip-calcium.html">
+<link rel="import" href="../measurements/blaktip-magnesium.html">
+<link rel="import" href="../measurements/blaktip-phosphate.html">
+<link rel="import" href="../measurements/blaktip-ammonia.html">
+
+
+
+<link rel="import" href="../shared-styles.html">
+<!-- <link rel="import" href="../../bower_componets/periscope-embed-element/periscope-embed-element.html"> -->
+<!-- <link rel="import" href="../elements/blaktip-elements.html"> -->
+
+
+<dom-module id="blaktip-tank">
+  <template>
+    <style include="shared-styles">
+      paper-card.white {
+      --paper-card-header-color: #fff;
+      position: relative;
+      }
+
+      .formatTable {
+        align-self: center;s
+        width: 250px;
+        border-spacing: 40px 0px;
+      }
+
+
+      iron-icon.star {
+      --iron-icon-width: 16px;
+      --iron-icon-height: 16px;
+      color: var(--paper-amber-500);
+      }
+    
+      iron-icon.star:last-of-type { 
+      color: var(--paper-grey-500); 
+      }
+    </style>
+
+    <paper-card heading="[[title]]" image="../images/reef5.png" alt="reef" class="card">
+      <div class="card-content">
+        <!-- <div class="tank-header" id="title"  class="invisible"> -->
+        <!-- </div> -->
+       <div class="tank-rating">
+         <iron-icon class="star" icon="star"></iron-icon>
+         <iron-icon class="star" icon="star"></iron-icon>
+         <iron-icon class="star" icon="star"></iron-icon>
+         <iron-icon class="star" icon="star"></iron-icon>
+         <iron-icon class="star" icon="star"></iron-icon>
+       </div>
+       <p id="body" class="tank-light"></p>
+       <table class="formatTable">
+       <th colspan="2" align="left">Critical Measurements</th>
+       <tr>
+         <td><blaktip-temperature id="temperature" temperature="[[temperature]]"></blaktip-temperature></td>
+         <td><blaktip-ph id="ph" value="7.8"></blaktip-ph>  </td>
+         <td><blaktip-specgrav id="specgrav" value="1.023"></blaktip-specgrav>  </td>
+         <td><blaktip-alkalinity id="alkalinity" value="7"></blaktip-alkalinity></td>
+      </tr>
+      <tr>
+         <td><blaktip-calcium id="calcium" value="420"></blaktip-calcium>  </td>
+         <td><blaktip-magnesium id="magnesium" value="1280"></blaktip-magnesium>  </td>
+         <td><blaktip-phosphate id="phosphate" value=".005"></blaktip-phosohate>  </td>
+         <td><blaktip-ammonia id="ammonia" value="00.0"></blaktip-ammonia>  </td>
+       </tr>        
+       </table>
+       
+      </div>
+    
+    <!-- <paper-icon-button onclick="modal.open()" class="settingsMenu" icon="icons:menu" raised></paper-icon-button>
+    <paper-dialog id="modal" modal>
+       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+       <div class="buttons">
+       <paper-button dialog-confirm autofocus>Tap me to close</paper-button>
+       </div>
+    </paper-dialog>
+
+
+
+    <paper-fab icon="create" id="myBtn" on-tap="toggleDialog"></paper-fab>        
+      <blaktip-tank-settings id="myDialog"></blacktip-tank-settings>
+     --></paper-card>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'blaktip-tank',
+
+      properties: {
+        editable: {
+          type: Boolean,
+          reflectToAttribute: true,
+          value: false
+        },
+
+        name: {
+          type: String,
+          notify: true,
+          value: ''
+        },
+
+        humidity: {
+          type: Number,
+          notify: true,
+          value: 0
+        },
+
+        temperature: {
+          type: Number,
+          notify: true,
+          value: 0
+        },
+
+        feed: {
+          type: String,
+          notify: true,
+          value: ''
+        },
+
+        lastUpdated: {
+          type: Number,
+          value: 0
+        }
+      },
+
+      listeners: {
+        input: 'onInput'
+      },
+
+      observers: [
+        'updateTextContent(title, body, temperature)'
+      ],
+
+
+      emptyClass(content, editable) {
+        if (editable) {
+          return !content ? 'placeholder' : '';
+        } else {
+          return !content ? 'hidden' : '';
+        }
+      },
+
+      propertiesAreEmpty() {
+        for (var i = 0; i < arguments.length; ++i) {
+          if (arguments[i]) {
+            return false;
+          }
+        }
+        return true;
+      },
+
+      updateTextContent(title, body, temperature) {
+        console.log(arguments);
+        //this.$.title.textContent = title;
+        //this.$.body.textContent = body;
+        //this.$.temperature.textContent = temperature;
+      },
+
+
+      onInput() {
+        this.async(function() {
+          this.title = this.$.title.innerText;
+          this.body = this.$.body.innerText;
+          this.temperature = this.$.temperature.innerText;
+        });
+      }
+    })
+  </script>
+</dom-module>

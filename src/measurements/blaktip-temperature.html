@@ -1,0 +1,32 @@
+<!--
+@license
+Copyright (c) 2016 Blacktip Author - Dan Brown. All rights reserved.
+-->
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../shared-styles/blaktip-measurements-styles.html">
+
+<dom-module id="blaktip-temperature">
+  <template>
+    <style include="blaktip-measurements-styles"></style>
+    <table>
+    <tr><td>
+    <paper-input label$="[[temperature]]" id="temperature" disabled>
+      <iron-icon icon="blaktip-svg-icons:temperature" prefix></iron-icon>
+      <div class="suffix" suffix>°F</div>
+      <paper-tooltip for="temperature" offset="0">Water Temperature</paper-tooltip>
+    </paper-input>
+    </td>
+    </tr>
+    <tr><td class="updated">
+    Temperature
+    </td></tr>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'blaktip-temperature',
+    });
+  </script>
+</dom-module>

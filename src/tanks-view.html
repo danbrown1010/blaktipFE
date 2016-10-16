@@ -11,6 +11,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
 
+<link rel="import" href="tank/blaktip-tank.html">
+
 <dom-module id="tanks-view">
   <template>
     <style include="shared-styles">
@@ -21,12 +23,48 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <div class="card">
-      <div class="circle">1</div>
-      <h1>Tank One</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div>
+
+   <!--Tanks Query -->
+   <!-- <firebase-document
+       id="document2"
+       app-name="blaktip"
+       path="[[editableTanksId]]"
+       data="{{editableTank}}">
+    </firebase-document> -->
+    <!-- Todo fix UID probelme here - needs to use user.uid  -->
+    <firebase-query
+       id="query1"
+       app-name="blaktip"
+       path="/tanks/wSVuDv51X4Xxn4K2hncytcfG3n43" 
+       data="{{data}}">
+    </firebase-query>
+
+    <firebase-query
+       id="query2"
+       app-name="blaktip"
+       path="/measurements/wSVuDv51X4Xxn4K2hncytcfG3n43"
+       data="{{measurements}}">
+    </firebase-query>
+    <!-- <app-indexeddb-mirror
+       session="wSVuDv51X4Xxn4K2hncytcfG3n43"
+       key="rooms"
+       data="{{data}}"
+       persisted-data="{{persistedRooms}}">
+    </app-indexeddb-mirror>
+ -->
+     <template is="dom-repeat" items="[[data]]" as="tank">
+        <template is="dom-repeat" items="[[measurements]]" as="measurement">
+          <blaktip-tank
+           id$="[[tank.$key]]"
+           title="[[tank.title]]"
+           body="[[tank.body]]"
+           temperature="[[measurement.currentTemp]]"
+           on-tap="edit">
+          </blaktip-tank>
+        </template>
+     </template>
+
+
 
     <div class="card">
       <div class="circle">2</div>
@@ -41,6 +79,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
       <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
     </div>
+
   </template>
 
   <script>

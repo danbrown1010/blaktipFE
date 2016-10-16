@@ -46,6 +46,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta name="msapplication-TileColor" content="#3f51b5">
     <meta name="msapplication-tap-highlight" content="no">
 
+
+    <!-- Older Chrome configuration -->
+    <link rel="icon"
+      sizes="192x192"
+      href="images/icon-192x192.png">
+
     <script>
       // Setup Polymer options
       window.Polymer = {
@@ -93,6 +99,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </script>
 
     <link rel="import" href="/src/blaktip-app.html">
+    <link rel="import" href="/bower_components/platinum-sw/platinum-sw-elements.html">
+    <link rel="import" href="/bower_components/polymerfire/firebase-app.html">
 
     <style>
       body {
@@ -105,6 +113,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
   </head>
   <body>
+    <platinum-sw-register
+    auto-register
+    skip-waiting
+    clients-claim
+    reload-on-install
+    href="sw-import.js">
+      <platinum-sw-cache
+      default-cache-strategy="networkFirst">
+      </platinum-sw-cache>
+    </platinum-sw-register>
+    <firebase-app
+    name="blaktip"
+    api-key="AIzaSyCgWUkk1w6slasgP0hhrAr1GVElJf4ie6Q"
+    auth-domain="sixth-tempo-89216.firebaseapp.com"
+    database-url="https://sixth-tempo-89216.firebaseio.com">
+    </firebase-app>
     <blaktip-app></blaktip-app>
     <!-- Built with love using Polymer Starter Kit -->
   </body>

@@ -1,0 +1,137 @@
+
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+
+<link rel="import" href="../measurements/blaktip-temperature.html">
+<link rel="import" href="../measurements/blaktip-humidity.html">
+<link rel="import" href="../shared-styles.html">
+<!-- <link rel="import" href="../../bower_componets/periscope-embed-element/periscope-embed-element.html"> -->
+<!-- <link rel="import" href="../elements/blaktip-elements.html"> -->
+
+
+<dom-module id="blaktip-room">
+  <template>
+    <style include="shared-styles">
+      paper-card.white {
+      --paper-card-header-color: #fff;
+      position: relative;
+      }
+
+      .formatTable {
+        align-self: center;s
+        width: 250px;
+        border-spacing: 40px 0px;
+      }
+    </style>
+
+<!-- <div class="card">
+<paper-icon-button icon="menu"></paper-icon-button>
+</div> -->
+    <paper-card heading="[[name]]" image="../images/reef4.png" alt="House" class="white card" style="margin-bottom:8px;">
+      <div class="card-actions">
+      <table class="formatTable">
+      <th colspan="2" align="left">Critical Measurements</th>
+      <tr><td>
+         <blaktip-temperature id="temperature" temperature="[[temperature]]"></blaktip-temperature> 
+         </td><td>
+         <blaktip-humidity humidity="[[humidity]]" id="humidity"></blaktip-humidity> 
+         </td></tr>
+       </table>
+       <paper-input label="[[feed]]" id="feed" disabled></paper-input>
+         <a href="[[feed]]">
+            <paper-icon-button icon="av:videocam"></paper-icon-button>
+         </a>
+    </div>
+    </paper-card>
+ 
+
+
+  </template>
+  <script>
+    Polymer({
+      is: 'blaktip-room',
+
+      properties: {
+        editable: {
+          type: Boolean,
+          reflectToAttribute: true,
+          value: false
+        },
+
+        name: {
+          type: String,
+          notify: true,
+          value: ''
+        },
+
+        humidity: {
+          type: Number,
+          notify: true,
+          value: 0
+        },
+
+        temperature: {
+          type: Number,
+          notify: true,
+          value: 0
+        },
+
+        feed: {
+          type: String,
+          notify: true,
+          value: ''
+        },
+
+        lastUpdated: {
+          type: Number,
+          value: 0
+        }
+      },
+
+      listeners: {
+        input: 'onInput'
+      },
+
+      observers: [
+        'updateTextContent(name, humidity, temperature, feed)'
+      ],
+
+
+      emptyClass(content, editable) {
+        if (editable) {
+          return !content ? 'placeholder' : '';
+        } else {
+          return !content ? 'hidden' : '';
+        }
+      },
+
+      propertiesAreEmpty() {
+        for (var i = 0; i < arguments.length; ++i) {
+          if (arguments[i]) {
+            return false;
+          }
+        }
+        return true;
+      },
+
+      updateTextContent(name, humidity, temperature, feed, lastUpdated) {
+        console.log(arguments);
+        // this.$.name.textContent = name;
+        // this.$.humidity.textContent = humidity;
+        // this.$.temperature.textContent = temperature;
+        // this.$.feed.textContent = feed;
+      },
+
+      onInput() {
+        this.async(function() {
+          this.name = this.$.name.innerText;
+          this.humidity = this.$.humidity.innerText;
+          this.temperature = this.$.temperature.innerText;
+          this.feed = this.$.videoLink.feed;
+        });
+      }
+    })
+  </script>
+</dom-module>

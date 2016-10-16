@@ -1,0 +1,47 @@
+<!--
+@license
+Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
+-->
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+<link rel="import" href="/bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+
+<dom-module id="blaktip-ppm">
+  <template>
+    <style>
+    .suffix{
+      font-size: 10px;
+    }
+    
+    .updated{
+      font-size: 8px;
+      text-align: center;
+
+    }
+
+    paper-input {
+    --paper-input-container-disabled: {
+      opacity: 1.00;
+     };
+    } 
+
+    </style>
+    <table>
+    <tr><td>
+    <paper-input label$="[[value]]" disabled>
+      <iron-icon icon="blaktip-svg-icons:temperature" prefix></iron-icon>
+      <div class="suffix" suffix>ppm</div>
+    </paper-input>
+    </td>
+    </tr>
+    <tr><td class="updated">
+    12/12/16 12:01
+    </td></tr>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'blaktip-ppm',
+    });
+  </script>
+</dom-module>

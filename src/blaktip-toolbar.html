@@ -1,0 +1,103 @@
+<!--
+@license
+Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
+-->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-badge/paper-badge.html">
+
+<link rel="import" href="../bower_components/app-storage/app-network-status-behavior.html">
+<link rel="import" href="../bower_components/iron-icons/communication-icons.html">
+
+
+<dom-module id="blaktip-toolbar">
+  <template>
+    <style>
+      :host {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        background-color: black;
+        color: var(--paper-grey-50);
+        --paper-icon-button-disabled: {
+          color: var(--paper-grey-50);
+        };
+      }
+
+      button {
+        display: block;
+        line-height: 40px;
+        background-color: transparent;
+        border: none;
+        font-size: 14px;
+        margin: 20px;
+      }
+
+
+      h1 {
+        font-size: 20px;
+        flex-grow: 1;
+        margin: 9px 0;
+      }
+
+      iron-icon {
+        margin-right: 0.5em;
+      }
+
+      @media (min-width: 640px) {
+        iron-icon,
+        paper-icon-button {
+          margin-right: 1.5em;
+      }
+
+      iron-icon:first-child {
+          margin-left: 1em;
+      }
+       
+      paper-badge {
+       --paper-badge-background: var(--paper-red-700);
+      } 
+
+    </style>
+    
+    <paper-icon-button icon="menu"></paper-icon-button> 
+    <h1>Blaktip</h1>
+    <iron-icon icon="cloud" hidden$="[[!online]]"></iron-icon>
+    <iron-icon icon="cloud-off" hidden$="[[online]]"></iron-icon>
+    <iron-icon icon="help" ></iron-icon>
+    <iron-icon id="alerts" icon="communication:message" ></iron-icon>
+        <paper-badge for="alerts" label="2"></paper-badge>
+    <paper-icon-button
+        icon="[[computeLockIcon(signedIn)]]"
+        disabled="[[!signedIn]]"
+        on-tap="lock">
+    </paper-icon-button>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'blaktip-toolbar',
+
+      behaviors: [
+        Polymer.AppNetworkStatusBehavior
+      ],
+
+      properties: {
+        signedIn: {
+          type: Boolean,
+          notify: true,
+          value: false
+        }
+      },
+
+      computeLockIcon: function(signedIn) {
+        return signedIn ? 'lock-open' : 'lock';
+      },
+
+      lock: function() {
+        this.fire('sign-out');
+      }
+    });
+  </script>
+</dom-module>

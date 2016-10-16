@@ -10,6 +10,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+
+<link rel="import" href="measurements/blaktip-temperature.html">
+<link rel="import" href="measurements/blaktip-humidity.html">
+<link rel="import" href="room/blaktip-room.html">
+
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+
+<link rel="import" href="../bower_components/app-storage/app-indexeddb-mirror/app-indexeddb-mirror.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+
+
+
 
 <dom-module id="rooms-view">
   <template>
@@ -21,6 +34,59 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
+   <!--Rooms Query -->
+   <!-- <firebase-document
+       id="document2"
+       app-name="blaktip"
+       path="[[editableRoomsId]]"
+       data="{{editableRoom}}">
+    </firebase-document> -->
+    <firebase-query
+       id="query3"
+       app-name="blaktip"
+       path="/rooms/wSVuDv51X4Xxn4K2hncytcfG3n43"
+       data="{{data}}">
+    </firebase-query>
+    <!-- <app-indexeddb-mirror
+       session="wSVuDv51X4Xxn4K2hncytcfG3n43"
+       key="rooms"
+       data="{{data}}"
+       persisted-data="{{persistedRooms}}">
+    </app-indexeddb-mirror>
+ -->
+    <template is="dom-repeat" items="{{data}}" as="room">
+        <blaktip-room
+           id$="[[room.$key]]"
+           name="[[room.name]]"
+           temperature="[[room.temperature]]"
+           humidity="[[room.humidity]]"
+           feed="[[room.feed]]"
+           on-tap="edit">
+        </blaktip-room>
+    </template>
+    
+
+
+
+    <!-- <div class="card"> -->
+    <!-- <paper-card heading="[[name]]" image="/images/reef4.png" alt="House" class="card" style="margin-bottom:8px;">
+      <div class="card-actions">
+      <table class="formatTable">
+      <th colspan="2" align="left">Critical Measurements</th>
+      <tr><td>
+         <blaktip-temperature id="temperature" temperature="[[temperature]]"></blaktip-temperature> 
+         </td><td>
+         <blaktip-humidity humidity="[[humidity]]" id="humidity"></blaktip-humidity> 
+         </td></tr>
+       </table>
+       <paper-input label="[[feed]]" id="feed" disabled></paper-input>
+         <a href="[[feed]]">
+            <paper-icon-button icon="av:videocam"></paper-icon-button>
+         </a>
+       </div>
+    </paper-card> -->
+    <!-- </div> -->
+
     <div class="card">
       <div class="circle">1</div>
       <h1>Room One</h1>
@@ -28,17 +94,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
     </div>
 
-    <div class="card">
+    <!--div class="card">
       <div class="circle">2</div>
       <h1>Room Two</h1>
       <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
       <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div>
+    </div> -->
+
+
+
+
   </template>
 
   <script>
     Polymer({
-      is: 'rooms-view'
+      is: 'rooms-view',
+      
+      get roomsPath() {
+         return '/rooms/' + this.user.uid;
+      }
+
     });
   </script>
 </dom-module>
