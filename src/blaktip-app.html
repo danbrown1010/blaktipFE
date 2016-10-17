@@ -135,6 +135,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        user="{{user}}">
     </firebase-auth>
 
+    <blaktip-login
+       on-sign-in="signIn"
+       signed-in="[[signedIn]]"
+       disabled="[[!online]]">
+    </blaktip-login>
+
     <blaktip-toolbar signed-in="[[signedIn]]" on-sign-out="signOut"></blaktip-toolbar>  
     
     <paper-tabs selected="{{selected}}">
@@ -184,6 +190,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           notify: true,
           reflectToAttribute: true
         }
+      },
+
+      signIn: function() {
+         this.$.auth.signInWithPopup();
       }
 
 
