@@ -47,6 +47,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="smallCircle">6</div>
       <h4> Log Six : Ut labores minimum atomorum pro. Laudem tibique ut has.</h4>
     </div>
+    <paper-fab
+       icon="add"
+       on-tap="create"
+       disabled="[[!online]]"
+       aria-label="Add tank">
+    </paper-fab>
   </template>
 
   <script>

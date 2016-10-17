@@ -101,7 +101,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
     </div> -->
 
-
+    <paper-fab
+       icon="add"
+       on-tap="create"
+       disabled="[[!online]]"
+       aria-label="Add room...">
+    </paper-fab>
 
 
   </template>
