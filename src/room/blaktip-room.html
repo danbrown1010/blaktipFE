@@ -19,6 +19,10 @@
       position: relative;
       }
 
+      paper-card {
+        /*z-index: 0;*/
+      }
+
       .formatTable {
         align-self: center;s
         width: 250px;
@@ -36,16 +40,16 @@
          <blaktip-humidity humidity="[[humidity]]" id="humidity"></blaktip-humidity> 
          </td></tr>
        </table>
+
+       <!-- Bottom Menu -->
+
        <div align="right">
          <paper-icon-button on-tap="_openCamFeedDialog" icon="av:videocam"></paper-icon-button>
          <paper-icon-button on-tap="_openLightDialog" icon="lightbulb-outline"></paper-icon-button>
          <paper-icon-button on-tap="_openEditDialog" icon="create"></paper-icon-button>
          <paper-icon-button on-tap="_openDeleteDialog" icon="delete"></paper-icon-button>
          <paper-icon-button on-tap="_openSettingsDialog" icon="icons:more-vert"><paper-icon-button>
-       </div>
-
-       
-       
+       </div>   
        <paper-dialog id="settingsDialog" modal>
        <h1>Room Settings</h1>
        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>

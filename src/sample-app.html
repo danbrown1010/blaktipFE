@@ -42,7 +42,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="blaktip-behavior.html">
 
 
-<dom-module id="blaktip-app">
+<dom-module id="sample-app">
   <template>
     <style>
       :host {
@@ -116,27 +116,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         font-weight: bold;
       }
+
+      paper-dialog.psuedoDrawer {
+        position: fixed;
+        width: 300px;
+        top: 0%;
+        left: 0%;
+        bottom: 5%;
+        right: 5%;
+        margin: 0px;
+      }
+
     </style>
 
-    <!-- <app-location route="{{route}}"></app-location>
-    <app-route
-        route="{{route}}"
-        pattern="/:page"
-        data="{{routeData}}"
-        tail="{{subroute}}"></app-route> -->
-    
-    <!--app-drawer-layout fullbleed-->
+    <paper-icon-button on-tap="_openLeftDrawerDialog" icon="menu"></paper-icon-button>
 
-    <firebase-auth
-       id="auth"
-       app-name="blaktip"
-       provider="google"
-       signed-in="{{signedIn}}"
-       user="{{user}}">
-    </firebase-auth>
+    <paper-dialog class="psuedoDrawer" id="leftDialog" modal>
+       <h1>Settings Drawer</h1>
+       <p>Are you sure you want to delete this tank from Blaktip?</p>
+       <div class="buttons">
+       <paper-button dialog-confirm autofocus>Tap me to close</paper-button>
+       </div>
+       </paper-dialog>
 
-    <blaktip-toolbar signed-in="[[signedIn]]" on-sign-out="signOut"></blaktip-toolbar>  
-    
+
+
     <paper-tabs selected="{{selected}}">
             <paper-tab>Rooms</paper-tab>
             <paper-tab>Tanks</paper-tab>
@@ -156,24 +160,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
            <div>Wordpress Stuff Here</div>
     </iron-pages>
 
-    <!-- <paper-drawer-panel id="drawerPanel">
-      <div drawer>
-        <paper-button tabindex="0">Options</paper-button>
-        <paper-button tabindex="0">Settings</paper-button>
-        <paper-button tabindex="0" paper-drawer-toggle>Close drawer</paper-button>
-      </div>
-      <div main>
-        <div>
-          <paper-button paper-drawer-toggle raised></paper-button>
-        </div>
-      </div>
-    </paper-drawer-panel> -->
-
+    
   </template>
 
   <script>
     Polymer({
-      is: 'blaktip-app',
+      is: 'sample-app',
 
       behaviors: [Polymer.BlaktipAppBehavior],
 
@@ -184,7 +176,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           notify: true,
           reflectToAttribute: true
         }
-      }
+      },
+
+      _openLeftDrawerDialog: function() {
+            this.$.leftDialog.open();
+      },
 
 
       /*observers: [
