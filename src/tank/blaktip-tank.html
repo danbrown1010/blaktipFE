@@ -29,9 +29,10 @@
       }
 
       .formatTable {
-        align-self: center;s
-        width: 250px;
-        border-spacing: 40px 0px;
+        font-family: 'Ubuntu', 'Roboto', sans-serif;
+        align-self: center;
+        width: 60%;
+        border-spacing: 0px 0px;
       }
 
 
@@ -57,9 +58,8 @@
          <iron-icon class="star" icon="star"></iron-icon>
          <iron-icon class="star" icon="star"></iron-icon>
        </div>
-       <p id="body" class="tank-light"></p>
+       <p id="body" class="tank-light">Critical Measurements</p>
        <table class="formatTable">
-       <th colspan="2" align="left">Critical Measurements</th>
        <tr>
          <td><blaktip-temperature id="temperature" temperature="[[temperature]]"></blaktip-temperature></td>
          <td><blaktip-ph id="ph" value="7.8"></blaktip-ph>  </td>
@@ -77,7 +77,7 @@
       </div>
 
        <!-- Bottom Menu -->
-
+       <hr>
        <div align="right">
          <paper-icon-button on-tap="_openCamFeedDialog" icon="av:videocam"></paper-icon-button>
          <paper-icon-button on-tap="_openLightDialog" icon="lightbulb-outline"></paper-icon-button>

@@ -3,9 +3,11 @@
   <style>
     :host{
       --iron-icon-fill-color: grey;
+      
     }
     
     .suffix{
+      font-family: 'Ubuntu', 'Roboto', sans-serif;
       font-size: 12px;
       color: grey;
     }
@@ -17,12 +19,25 @@
 
     }
 
-    paper-input {
-    --paper-input-container-disabled: {opacity: 1.00;}
+    td {
+      text-align: center; /* center checkbox horizontally */
+      vertical-align: middle; /* center checkbox vertically */
     }
 
-    
+    paper-badge.autoRead {
+       --paper-badge-background: green;
+       --paper-badge-margin-left: -15px;
+       --paper-badge-margin-bottom: -5px;
+       --paper-badge-opacity: .25;
+       --paper-badge-width: 15px;
+       --paper-badge-height: 15px;
+      } 
 
+
+    paper-input {
+    --paper-input-container-disabled: {opacity: 1.00;}
+
+    }
 
   </style>
 </template>

@@ -40,11 +40,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="blaktip-toolbar.html">
 <link rel="import" href="blaktip-login.html">
 <link rel="import" href="blaktip-behavior.html">
+<link rel="import" href="/shared-styles/shared-styles.html">
 
 
 <dom-module id="blaktip-app">
   <template>
-    <style>
+    <style include="shared-styles">
       :host {
         --app-primary-color: black;
         --app-secondary-color: black;
@@ -52,12 +53,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         @apply(--layout-horizontal);
         @apply(--layout-center);
-        
+       
         display: block;
-      }
-
-      paper-toolbar {
-        @apply(--layout-horizontal);
       }
 
       h1 {
@@ -84,6 +81,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       paper-tab {
+        font-family: 'Ubuntu', 'Roboto', sans-serif;
         --paper-tab-ink: white;
       }
 
@@ -141,7 +139,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        disabled="[[!online]]">
     </blaktip-login>
 
-    <blaktip-toolbar signed-in="[[signedIn]]" on-sign-out="signOut"></blaktip-toolbar>  
+    <blaktip-toolbar user="[[user]]" signed-in="[[signedIn]]" on-sign-out="signOut"></blaktip-toolbar>  
     
     <paper-tabs selected="{{selected}}">
             <paper-tab>Rooms</paper-tab>
@@ -161,20 +159,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
            <div><analytics-view></analytics-view></div>
            <div>Wordpress Stuff Here</div>
     </iron-pages>
-
-    <!-- <paper-drawer-panel id="drawerPanel">
-      <div drawer>
-        <paper-button tabindex="0">Options</paper-button>
-        <paper-button tabindex="0">Settings</paper-button>
-        <paper-button tabindex="0" paper-drawer-toggle>Close drawer</paper-button>
-      </div>
-      <div main>
-        <div>
-          <paper-button paper-drawer-toggle raised></paper-button>
-        </div>
-      </div>
-    </paper-drawer-panel> -->
-
   </template>
 
   <script>

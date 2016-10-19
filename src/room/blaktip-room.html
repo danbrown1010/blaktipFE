@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_componets/periscope-embed-element/periscope-embed-element.html">
 
 
 <link rel="import" href="../measurements/blaktip-temperature.html">
@@ -20,35 +21,41 @@
       }
 
       paper-card {
+        font-family: 'Ubuntu', 'Roboto', sans-serif;
         /*z-index: 0;*/
       }
 
       .formatTable {
-        align-self: center;s
-        width: 250px;
-        border-spacing: 40px 0px;
+        align-self: center;
+        width: 80%;
+        border-spacing: 10px 0px;
+        padding-top: 0px;
       }
     </style>
 
     <paper-card heading="[[name]]" image="../images/reef4.png" alt="House" class="white card" style="margin-bottom:8px;">
       <div class="card-actions">
+      <p>Critical Measurements</p>
+
       <table class="formatTable">
-      <th colspan="2" align="left">Critical Measurements</th>
-      <tr><td>
+      <tr>
+         <td>
          <blaktip-temperature id="temperature" temperature="[[temperature]]"></blaktip-temperature> 
-         </td><td>
+         </td>
+         <td>
          <blaktip-humidity humidity="[[humidity]]" id="humidity"></blaktip-humidity> 
-         </td></tr>
+         </td>
+       </tr>
        </table>
 
        <!-- Bottom Menu -->
-
+       <hr>
        <div align="right">
-         <paper-icon-button on-tap="_openCamFeedDialog" icon="av:videocam"></paper-icon-button>
-         <paper-icon-button on-tap="_openLightDialog" icon="lightbulb-outline"></paper-icon-button>
-         <paper-icon-button on-tap="_openEditDialog" icon="create"></paper-icon-button>
-         <paper-icon-button on-tap="_openDeleteDialog" icon="delete"></paper-icon-button>
-         <paper-icon-button on-tap="_openSettingsDialog" icon="icons:more-vert"><paper-icon-button>
+         <paper-icon-button class="bottomBorder" on-tap="_openCamFeedDialog" icon="av:videocam"></paper-icon-button>
+         <paper-icon-button class="bottomBorder" on-tap="_openLightDialog" icon="lightbulb-outline"></paper-icon-button>
+         <paper-icon-button class="bottomBorder" on-tap="_openEditDialog" icon="create"></paper-icon-button>
+         <paper-icon-button class="bottomBorder" on-tap="_openDeleteDialog" icon="delete"></paper-icon-button>
+         <paper-icon-button class="bottomBorder" on-tap="_openSettingsDialog" icon="icons:more-vert"><paper-icon-button>
        </div>   
        <paper-dialog id="settingsDialog" modal>
        <h1>Room Settings</h1>
@@ -85,6 +92,7 @@
        <paper-dialog id="camFeedDialog" modal>
        <h1>Web Camera Feed</h1>
        <p>FEED HERE: [[feed]]</p>
+       <iframe width="316" height="561" source="https://www.periscope.tv/danbrown1010/1OwxWrZkkgpJQ" frameborder="0" scrolling="no" allowfullscreen></iframe>
        <div class="buttons">
        <paper-button dialog-confirm autofocus>Tap me to close</paper-button>
        </div>

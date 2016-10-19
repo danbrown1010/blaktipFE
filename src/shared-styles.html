@@ -9,11 +9,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Ubuntu">
+
+
+
 
 <!-- shared styles for all views -->
 <dom-module id="shared-styles">
   <template>
     <style>
+
+     :host {
+        font-family: 'Ubuntu', 'Roboto', sans-serif;
+      }
+
       .card {
         margin: 24px;
         padding: 0px;
@@ -64,19 +73,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       h1 {
-        margin: 16px 0;
-
+        margin: 18px 0;
         color: #212121;
-
         font-size: 22px;
       }
 
+      hr { 
+        border : 0;
+        height: 1px; 
+        background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+      } 
+
+
       .logEntryTitle{
         margin: 16px 0;
-
         color: #212121;
-
         font-size: 18px;
+      }
+
+      paper-icon-button.bottomButton {
+        border: 0;
+
       }
     </style>
   </template>

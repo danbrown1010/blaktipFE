@@ -12,16 +12,18 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
   <template>
     <style include="blaktip-measurements-styles"></style>
     <table>
-    <tr><td>
-    <paper-input label$="[[value]]" disabled>
-      <iron-icon icon="blaktip-svg-icons:specGravity" prefix></iron-icon>
-      <div class="suffix" suffix>dKH</div>
-    </paper-input>
-    </td>
+    <tr><td rowspan="2">
+        <paper-icon-button id="alk" icon="blaktip-svg-icons:specGravity"><paper-icon-button>
+        </td>
+        <td>
+        <paper-icon-item align="left" id="humidity">[[value]] dKH</paper-icon-item>
+        </td>
     </tr>
-    <tr><td class="updated">
-    12/12/16 12:01
-    </td></tr>
+    <tr><td class="updated">Alkalinity</td>
+    </tr>
+    </table>
+
+    <!-- <paper-badge class="autoRead" for="hum" label="A"></paper-badge> -->
 
   </template>
   <script>

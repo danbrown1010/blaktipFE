@@ -11,17 +11,21 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
 <dom-module id="blaktip-magnesium">
   <template>
     <style include="blaktip-measurements-styles"></style>
+  
     <table>
-    <tr><td>
-    <paper-input label$="[[value]]" disabled>
-      <iron-icon icon="icons:label" prefix></iron-icon>
-      <div class="suffix" suffix>ppm</div>
-    </paper-input>
-    </td>
+    <tr><td rowspan="2">
+        <paper-icon-button id="mag" icon="icons:label"><paper-icon-button>
+        </td>
+        <td>
+        <paper-icon-item align="left" id="mag">[[value]]</paper-icon-item>
+        </td>
     </tr>
-    <tr><td class="updated">
-    12/12/16 12:01
-    </td></tr>
+    <tr><td class="updated">Magnesium</td>
+    </tr>
+    </table>
+
+    <!-- <paper-badge class="autoRead" for="mag" label="A"></paper-badge> -->
+
 
   </template>
   <script>

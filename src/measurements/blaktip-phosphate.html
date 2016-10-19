@@ -11,7 +11,7 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
 <dom-module id="blaktip-phosphate">
   <template>
     <style include="blaktip-measurements-styles"></style>
-    <table>
+    <!-- <table>
     <tr><td>
     <paper-input label$="[[value]]" disabled>
       <iron-icon icon="icons:apps" prefix></iron-icon>
@@ -21,7 +21,24 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
     </tr>
     <tr><td class="updated">
     12/12/16 12:01
-    </td></tr>
+    </td></tr> -->
+
+    <table>
+    <tr><td rowspan="2">
+        <paper-icon-button id="pho" icon="icons:create"><paper-icon-button>
+        </td>
+        <td>
+        <paper-icon-item align="left" id="pho">[[value]]</paper-icon-item>
+        </td>
+    </tr>
+    <tr><td class="updated">Phosphate</td>
+    </tr>
+    </table>
+
+    <!-- <paper-badge class="autoRead" for="pho" label="A"></paper-badge> -->
+
+
+
 
   </template>
   <script>

@@ -11,16 +11,18 @@ Copyright (c) 2016 Blacktip Author - Dan Brown. All rights reserved.
   <template>
     <style include="blaktip-measurements-styles"></style>
     <table>
-    <tr><td>
-    <paper-input label$="[[humidity]]" id="humidity" disabled>
-      <iron-icon icon="icons:more-vert" prefix></iron-icon>
-      <div class="suffix" suffix>%</div>
-      <paper-tooltip for="humidity" offset="0">Humidity</paper-tooltip>
-    </paper-input>
-    </td>
+    <tr><td rowspan="2">
+        <paper-icon-button id="hum" icon="icons:swap-vert"><paper-icon-button>
+        </td>
+        <td>
+        <paper-icon-item align="left" id="humidity">[[humidity]] %</paper-icon-item>
+        </td>
     </tr>
-    <tr><td class="updated">
-    Humidity    </td></tr>
+    <tr><td class="updated">Humidity</td>
+    </tr>
+    </table>
+
+    <paper-badge class="autoRead" for="hum" label="A"></paper-badge>
 
   </template>
   <script>

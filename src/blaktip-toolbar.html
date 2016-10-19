@@ -16,7 +16,7 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
 
 <dom-module id="blaktip-toolbar">
   <template>
-    <style>
+    <style include="shared-styles">
       :host {
         @apply(--layout-horizontal);
         @apply(--layout-center);
@@ -38,9 +38,9 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
 
 
       p {
-        font-size: 12px;
+        font-size: 16px;
         flex-grow: 1;
-        margin: 9px 0;
+        margin: 0px 0;
       }
 
       iron-icon {
@@ -59,11 +59,16 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
        
       paper-badge {
        --paper-badge-background: var(--paper-red-700);
+       --paper-badge-opacity: .80;
+       --paper-badge-width: 15px;
+       --paper-badge-height: 15px;
       } 
 
       paper-dialog.psuedoDrawer {
+        font-family: 'Ubuntu', 'Roboto', sans-serif;
         position: fixed;
-        width: 300px;
+        padding: 0px;
+        width: 250px;
         top: 0%;
         left: 0%;
         bottom: 0%;
@@ -71,9 +76,17 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
         margin: 0px;
       }
 
+      .userPic {
+        width: 40px;
+        height: 40px;
+        background: #ddd;
+        border-radius: 50%;
+      }
+
+      
     </style>
     
-    <paper-icon-button on-tap="_openLeftDrawerDialog" icon="menu"></paper-icon-button> 
+    <paper-icon-button disabled="[[!signedIn]]" on-tap="_openLeftDrawerDialog" icon="menu"></paper-icon-button> 
     <p>Blaktip</p>
     <iron-icon icon="cloud" hidden$="[[!online]]"></iron-icon>
     <iron-icon icon="cloud-off" hidden$="[[online]]"></iron-icon>
@@ -86,13 +99,23 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
         on-tap="lock">
     </paper-icon-button>
 
+
+
     <paper-dialog class="psuedoDrawer" id="leftDialog" modal>
-       <h1>Settings Drawer</h1>
-       <p>Seetings all listed here!!!!</p>
+       <div align="left">
+       <table align="left" >
+       <tr><td rowspan="2"><iron-image sizing="cover" class="userPic" src="[[user.photoURL]]"></iron-image></td><td align="left"><b>[[user.displayName]]</b></td></tr>
+       <tr><td align="left">[[user.email]]</td></tr>
+       </table>
+       </div>
+       <hr>
+       <div>
+          <p>Seetings all listed here!!!!</p></div>
+       </div>
        <div class="buttons">
        <paper-button dialog-confirm autofocus>Tap me to close</paper-button>
        </div>
-       </paper-dialog>
+    </paper-dialog>
 
   </template>
   <script>
