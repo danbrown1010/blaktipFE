@@ -28,6 +28,8 @@
       position: relative;
       }
 
+      td:hover {background-color: #f5f5f5}
+
       .formatTable {
         font-family: 'Ubuntu', 'Roboto', sans-serif;
         align-self: center;
@@ -49,8 +51,6 @@
 
     <paper-card heading="[[title]]" image="../images/reef5.png" alt="reef" class="card">
       <div class="card-content">
-        <!-- <div class="tank-header" id="title"  class="invisible"> -->
-        <!-- </div> -->
        <div class="tank-rating">
          <iron-icon class="star" icon="star"></iron-icon>
          <iron-icon class="star" icon="star"></iron-icon>
@@ -58,7 +58,7 @@
          <iron-icon class="star" icon="star"></iron-icon>
          <iron-icon class="star" icon="star"></iron-icon>
        </div>
-       <p id="body" class="tank-light">Critical Measurements</p>
+       <p>Critical Measurements</p>
        <table class="formatTable">
        <tr>
          <td><blaktip-temperature id="temperature" temperature="[[temperature]]"></blaktip-temperature></td>
@@ -73,11 +73,25 @@
          <td><blaktip-ammonia id="ammonia" value="00.0"></blaktip-ammonia>  </td>
        </tr>        
        </table>
-       
+       <p>Other Measurements</p>
+       <table class="formatTable">
+       <tr>
+         <td><blaktip-temperature id="temperature" temperature="[[temperature]]"></blaktip-temperature></td>
+         <td><blaktip-ph id="ph" value="7.8"></blaktip-ph>  </td>
+         <td><blaktip-specgrav id="specgrav" value="1.023"></blaktip-specgrav>  </td>
+         <td><blaktip-alkalinity id="alkalinity" value="7"></blaktip-alkalinity></td>
+      </tr>
+      <tr>
+         <td><blaktip-calcium id="calcium" value="420"></blaktip-calcium>  </td>
+         <td><blaktip-magnesium id="magnesium" value="1280"></blaktip-magnesium>  </td>
+         <td><blaktip-phosphate id="phosphate" value=".005"></blaktip-phosohate>  </td>
+         <td><blaktip-ammonia id="ammonia" value="00.0"></blaktip-ammonia>  </td>
+       </tr>        
+       </table>
       </div>
+       <hr>
 
        <!-- Bottom Menu -->
-       <hr>
        <div align="right">
          <paper-icon-button on-tap="_openCamFeedDialog" icon="av:videocam"></paper-icon-button>
          <paper-icon-button on-tap="_openLightDialog" icon="lightbulb-outline"></paper-icon-button>

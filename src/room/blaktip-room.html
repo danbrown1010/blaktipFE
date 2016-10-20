@@ -4,7 +4,7 @@
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../../bower_componets/periscope-embed-element/periscope-embed-element.html">
+<!-- <link rel="import" href="../../bower_componets/periscope-embed-element/periscope-embed-element.html"> -->
 
 
 <link rel="import" href="../measurements/blaktip-temperature.html">
@@ -20,21 +20,16 @@
       position: relative;
       }
 
-      paper-card {
-        font-family: 'Ubuntu', 'Roboto', sans-serif;
-        /*z-index: 0;*/
-      }
-
       .formatTable {
         align-self: center;
-        width: 80%;
-        border-spacing: 10px 0px;
+        width: 100%;
+        border-spacing: 0px 0px;
         padding-top: 0px;
       }
     </style>
 
-    <paper-card heading="[[name]]" image="../images/reef4.png" alt="House" class="white card" style="margin-bottom:8px;">
-      <div class="card-actions">
+    <paper-card heading="[[name]]" image="../images/reef4.png" alt="House" class="card white">
+      <div class="card-content">
       <p>Critical Measurements</p>
 
       <table class="formatTable">
@@ -55,7 +50,7 @@
          <paper-icon-button class="bottomBorder" on-tap="_openLightDialog" icon="lightbulb-outline"></paper-icon-button>
          <paper-icon-button class="bottomBorder" on-tap="_openEditDialog" icon="create"></paper-icon-button>
          <paper-icon-button class="bottomBorder" on-tap="_openDeleteDialog" icon="delete"></paper-icon-button>
-         <paper-icon-button class="bottomBorder" on-tap="_openSettingsDialog" icon="icons:more-vert"><paper-icon-button>
+         <paper-icon-button class="bottomBorder" on-tap="_openSettingsDialog" icon="icons:more-vert"></paper-icon-button>
        </div>   
        <paper-dialog id="settingsDialog" modal>
        <h1>Room Settings</h1>
@@ -95,6 +90,8 @@
        <iframe width="316" height="561" source="https://www.periscope.tv/danbrown1010/1OwxWrZkkgpJQ" frameborder="0" scrolling="no" allowfullscreen></iframe>
        <div class="buttons">
        <paper-button dialog-confirm autofocus>Tap me to close</paper-button>
+       </div>
+       </paper-dialog>
        </div>
 
     </paper-card>

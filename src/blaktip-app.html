@@ -6,6 +6,18 @@ The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+
+App Engine default service account
+
+Email address 
+sixth-tempo-89216@appspot.gserviceaccount.com
+Key IDs 
+64c0d86ef0d1281b50942016e3939d1194df8a57
+
+
+
+
+
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
@@ -40,7 +52,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="blaktip-toolbar.html">
 <link rel="import" href="blaktip-login.html">
 <link rel="import" href="blaktip-behavior.html">
-<link rel="import" href="/shared-styles/shared-styles.html">
+<link rel="import" href="shared-styles.html">
 
 
 <dom-module id="blaktip-app">
@@ -152,8 +164,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
     <iron-pages selected="{{selected}}">
-           <div><rooms-view></rooms-view></div>
-           <div><tanks-view></tanks-view></div>
+           <div><rooms-view user="[[user]]"></rooms-view></div>
+           <div><tanks-view user="[[user]]"></tanks-view></div>
            <div><logs-view></logs-view></div>
            <div><livestock-view></livestock-view></div>
            <div><analytics-view></analytics-view></div>

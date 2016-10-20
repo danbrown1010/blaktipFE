@@ -32,7 +32,9 @@
     "neon-animation": "PolymerElements/neon-animation#^1.2.4",
     "periscope-embed-element": "^1.0.5",
     "paper-tooltip": "PolymerElements/paper-tooltip#^1.1.3",
-    "paper-item": "PolymerElements/paper-item#^1.2.1"
+    "paper-item": "PolymerElements/paper-item#^1.2.1",
+    "paper-toggle-button": "PolymerElements/paper-toggle-button#^1.2.1",
+    "gold-phone-input": "PolymerElements/gold-phone-input#^1.1.0"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

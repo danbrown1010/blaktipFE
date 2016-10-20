@@ -41,20 +41,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        path="[[editableRoomsId]]"
        data="{{editableRoom}}">
     </firebase-document> -->
-    <firebase-query
+    <!-- <firebase-query
        id="query3"
        app-name="blaktip"
        path="/rooms/wSVuDv51X4Xxn4K2hncytcfG3n43"
        data="{{data}}">
+    </firebase-query> -->
+
+    <firebase-query
+       id="query3"
+       app-name="blaktip"
+       path="/rooms/[[user.uid]]"
+       data="{{data}}">
     </firebase-query>
-    <!-- <app-indexeddb-mirror
-       session="wSVuDv51X4Xxn4K2hncytcfG3n43"
+
+     <app-indexeddb-mirror
+       session="[[userId]]"
        key="rooms"
        data="{{data}}"
        persisted-data="{{persistedRooms}}">
     </app-indexeddb-mirror>
- -->
-    <template is="dom-repeat" items="{{data}}" as="room">
+    <template is="dom-repeat" items="[[data]]" as="room">
         <blaktip-room
            id$="[[room.$key]]"
            name="[[room.name]]"
@@ -63,6 +70,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
            feed="[[room.feed]]"
            on-tap="edit">
         </blaktip-room>
+
+        <!-- <div class="card">
+      <div class="circle">1</div>
+      <h1>Room 1</h1>
+      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
+      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
+    </div> -->
     </template>
     
 
@@ -87,12 +101,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </paper-card> -->
     <!-- </div> -->
 
-    <div class="card">
+    <!-- <div class="card">
       <div class="circle">1</div>
       <h1>Room One</h1>
       <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
       <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div>
+    </div> -->
 
     <!--div class="card">
       <div class="circle">2</div>
@@ -114,6 +128,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     Polymer({
       is: 'rooms-view',
+
+      // properties: {
+      //   userId: {
+      //     type: String,
+      //     notify: true,
+      //     value: ''
+      //   }
+      // },
+
       
       get roomsPath() {
          return '/rooms/' + this.user.uid;

@@ -6,6 +6,9 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../bower_components/gold-phone-input/gold-phone-input.html">
+
 <link rel="import" href="../bower_components/paper-badge/paper-badge.html">
 <link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
 
@@ -19,6 +22,7 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
     <style include="shared-styles">
       :host {
         @apply(--layout-horizontal);
+        font-family: 'Ubuntu', 'Roboto', sans-serif;
         @apply(--layout-center);
         background-color: black;
         color: var(--paper-grey-50);
@@ -27,14 +31,14 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
         };
       }
 
-      button {
+      /*button {
         display: block;
         line-height: 40px;
         background-color: transparent;
         border: none;
         font-size: 14px;
         margin: 20px;
-      }
+      }*/
 
 
       p {
@@ -47,11 +51,11 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
         margin-right: 0.5em;
       }
 
-      @media (min-width: 640px) {
+      /*@media (min-width: 640px) {
         iron-icon,
         paper-icon-button {
           margin-right: 1.5em;
-      }
+      }*/
 
       iron-icon:first-child {
           margin-left: 1em;
@@ -64,8 +68,17 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
        --paper-badge-height: 15px;
       } 
 
+      paper-button.drawerItem {
+        font-family: 'Ubuntu', 'Roboto', sans-serif;
+        width: 100%;
+        text-align: left;
+        border-radius: 0px;
+        padding-left: 0px;
+      }
+
       paper-dialog.psuedoDrawer {
         font-family: 'Ubuntu', 'Roboto', sans-serif;
+        padding-left: 0px;
         position: fixed;
         padding: 0px;
         width: 250px;
@@ -82,8 +95,6 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
         background: #ddd;
         border-radius: 50%;
       }
-
-      
     </style>
     
     <paper-icon-button disabled="[[!signedIn]]" on-tap="_openLeftDrawerDialog" icon="menu"></paper-icon-button> 
@@ -93,30 +104,104 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
     <iron-icon icon="help" ></iron-icon>
     <iron-icon id="alerts" icon="communication:message" ></iron-icon>
         <paper-badge for="alerts" label="2"></paper-badge>
+    
     <paper-icon-button
         icon="[[computeLockIcon(signedIn)]]"
         disabled="[[!signedIn]]"
         on-tap="lock">
     </paper-icon-button>
 
-
-
     <paper-dialog class="psuedoDrawer" id="leftDialog" modal>
-       <div align="left">
-       <table align="left" >
-       <tr><td rowspan="2"><iron-image sizing="cover" class="userPic" src="[[user.photoURL]]"></iron-image></td><td align="left"><b>[[user.displayName]]</b></td></tr>
-       <tr><td align="left">[[user.email]]</td></tr>
-       </table>
+       <div align="center">
+          <iron-image sizing="cover" class="userPic" src="[[user.photoURL]]"></iron-image>
+          <div><b>[[user.displayName]]</b></div>
+          <div align="center" style="font-size: 10px">[[user.email]]</div>
+          <hr>
+          <div>
+            <paper-button on-tap="_openNotificationsDialog" class="drawerItem"><iron-icon icon="feedback" item-icon></iron-icon>Notifications</paper-button>
+            <paper-button on-tap="_openDevicesDialog" class="drawerItem"><iron-icon icon="communication:phonelink-setup" item-icon></iron-icon>Devices</paper-button>
+            <paper-button on-tap="_openSettingsDialog" class="drawerItem"><iron-icon icon="settings" item-icon></iron-icon>Settings</paper-button>
+            <paper-button class="drawerItem"><iron-icon icon="star" item-icon></iron-icon>Starred</paper-button>
+          </div>
+          <hr>
+          <div align="right"><paper-icon-button icon="hardware:keyboard-arrow-left" dialog-confirm>Tap me to close</paper-icon-button></div>
        </div>
-       <hr>
-       <div>
-          <p>Seetings all listed here!!!!</p></div>
-       </div>
+    </paper-dialog>
+
+
+    <paper-dialog id="settingsDialog" modal>
+       <h1>Settings</h1>
+       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
        <div class="buttons">
        <paper-button dialog-confirm autofocus>Tap me to close</paper-button>
        </div>
     </paper-dialog>
 
+    <paper-dialog id="notificationsDialog" modal>
+       <h1>Notifications</h1>
+       <p>Set and manage the global notifications for the Blaktip environment.</p>
+       <paper-toggle-button>Global Browser Notifications</paper-toggle-button>
+       <gold-phone-input label="Valid US number for text messages" value="415-111-1111" auto-validate></gold-phone-input>
+
+       
+       <div class="buttons">
+       <paper-button dialog-confirm autofocus>Save</paper-button>
+       <paper-button dialog-confirm autofocus>Cancel</paper-button>
+       </div>
+    </paper-dialog>
+
+    <paper-dialog id="devicesDialog" modal>
+       <h1>Devices</h1>
+       <p>Lorem citation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+       <div class="buttons">
+       <paper-button dialog-confirm autofocus>Tap me to close</paper-button>
+       </div>
+    </paper-dialog>
+
+
+
+       <!-- <table width="100%" align="center" border="0"> -->
+          <!-- <tr><td align="center"><iron-image sizing="cover" class="userPic" src="[[user.photoURL]]"></iron-image></td></tr> -->
+          <!-- <tr><td align="center"><b>[[user.displayName]]</b></td></tr> -->
+          <!-- <tr><td align="center" style="font-size: 10px">[[user.email]]</td></tr> -->
+          <!-- <tr><td style="font-size: 8px">[[user.uid]]</td></tr> -->
+          <!-- <tr><td><hr></td></tr> -->
+          <!-- <paper-icon-item><iron-icon icon="inbox" item-icon></iron-icon>Inbox</paper-icon-item>
+          <paper-icon-item><iron-icon icon="star" item-icon></iron-icon>Starred</paper-icon-item> -->
+          <!-- <tr><td><paper-button class="drawerItem"><iron-icon icon="feedback" item-icon></iron-icon>Notifications</paper-button></td></tr> -->
+          <!-- <tr><td><paper-button class="drawerItem"><iron-icon icon="communication:phonelink-setup" item-icon></iron-icon>Devices</paper-button></td></tr> -->
+          <!-- <tr><td><paper-button class="drawerItem"><iron-icon icon="settings" item-icon></iron-icon>Settings</paper-button></td></tr> -->
+          <!-- <tr><td><paper-button class="drawerItem"><iron-icon icon="star" item-icon></iron-icon>Starred</paper-button></td></tr> -->
+          <!-- <tr><td><hr></td></tr> -->
+          <!-- <tr><td><paper-icon-item><iron-icon icon="communication:phonelink-setup" item-icon></iron-icon>Device Configuration</paper-icon-item></td></tr> -->
+          <!-- <tr><td><paper-icon-item><iron-icon icon="hardware:keyboard-arrow-left" item-icon></iron-icon>Starred</paper-icon-item></td></tr> -->
+          <!-- <tr><td align="right"><paper-icon-button icon="hardware:keyboard-arrow-left" dialog-confirm>Tap me to close</paper-icon-button></td></tr> -->
+       <!-- </table> -->
+       <!-- <tr><td rowspan="2"><iron-image sizing="cover" class="userPic" src="[[user.photoURL]]"></iron-image></td><td align="left"><b>[[user.displayName]]</b></td></tr>
+       <tr><td align="left" style="font-size: 10px">[[user.email]]</td></tr>
+       <tr></tr><td colspan="2" style="font-size: 8px">[[user.uid]]</td></tr>
+       </table>
+       </div> -->
+       <!-- <hr> -->
+       <!-- <div>
+          <p>Settings all listed here!!!!</p></div>
+          <paper-button id="pushNotes" class="js-push-button" disabled>
+             Enable Push Messages  
+          </paper-button>
+       </div>
+        -->
+        <!-- <div>
+          <paper-menu>
+            <paper-item>Home</paper-item>
+            <paper-item>Google Cards</paper-item>
+            <paper-item>Feedback Form</paper-item>
+            <paper-item>Right drawer</paper-item>
+            <paper-item>Google Charts</paper-item>
+          </paper-menu>
+ -->
+        <!-- <div class="buttons">
+       <paper-button dialog-confirm autofocus>Tap me to close</paper-button>
+       </div> -->
   </template>
   <script>
     Polymer({
@@ -140,6 +225,18 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
 
       _openLeftDrawerDialog: function() {
             this.$.leftDialog.open();
+      },
+
+      _openSettingsDialog: function() {
+            this.$.settingsDialog.open();
+      },
+
+      _openDevicesDialog: function() {
+            this.$.devicesDialog.open();
+      },
+
+      _openNotificationsDialog: function() {
+            this.$.notificationsDialog.open();
       },
 
       lock: function() {
