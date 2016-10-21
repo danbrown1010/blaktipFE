@@ -15,6 +15,7 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
 
 <link rel="import" href="../bower_components/app-storage/app-network-status-behavior.html">
 <link rel="import" href="../bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="./blaktip-icons.html">
 
 
 <dom-module id="blaktip-toolbar">
@@ -97,7 +98,7 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
       }
     </style>
     
-    <paper-icon-button disabled="[[!signedIn]]" on-tap="_openLeftDrawerDialog" icon="menu"></paper-icon-button> 
+    <paper-icon-button disabled="[[!signedIn]]" on-tap="_openLeftDrawerDialog" icon="blaktip-svg-icons:logo"></paper-icon-button> 
     <p>Blaktip</p>
     <iron-icon icon="cloud" hidden$="[[!online]]"></iron-icon>
     <iron-icon icon="cloud-off" hidden$="[[online]]"></iron-icon>

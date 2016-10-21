@@ -1,6 +1,19 @@
 <!--
 @license
 Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
+
+Alkalinity is a measure of the buffering capacity of
+water - its ability to resist sudden changes in pH.
+pH is a measure of how acidic or basic water is. Alkalinity is the 
+water’s capacity to resist changes in pH that would make the water more acidic.
+
+This capacity is commonly known as “buffering capacity.” For example, if you
+add the same weak acid solution to two vials of water - both with a pH of 7, 
+but one with no buffering power (e.g. zero alkalinity) and the other with 
+buffering power (e.g. an alkalinity of 50 mg/l) - the pH of the zero 
+alkalinity water will immediately drop while the pH of the buffered water 
+will change very little or not at all.
+ 
 -->
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
@@ -10,10 +23,16 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
 
 <dom-module id="blaktip-alkalinity">
   <template>
-    <style include="blaktip-measurements-styles"></style>
+    <style include="blaktip-measurements-styles">
+      iron-icon.sele path {
+        fill: #FFFFFF;
+      }
+
+    </style>
     <table>
+    
     <tr><td rowspan="2">
-        <paper-icon-button id="alk" icon="blaktip-svg-icons:specGravity"><paper-icon-button>
+        <paper-icon-button id="alk" icon="blaktip-svg-icons:alkalinity"><paper-icon-button>
         </td>
         <td>
         <paper-icon-item align="left" id="humidity">[[value]] dKH</paper-icon-item>
