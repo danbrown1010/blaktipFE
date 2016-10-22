@@ -3,6 +3,11 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/paper-tab/paper-tab.html">
+
+
 
 <link rel="import" href="../measurements/blaktip-temperature.html">
 <link rel="import" href="../measurements/blaktip-ph.html">
@@ -42,6 +47,7 @@
 
       paper-dialog.tankSettings {
         width: 80%;
+        background-color: black; 
       }
 
       iron-icon.star {
@@ -53,7 +59,46 @@
       iron-icon.star:last-of-type { 
       color: var(--paper-grey-500); 
       }
+
+      .settingsDialog {
+      font-family: 'Ubuntu', 'Roboto', sans-serif;
+      --paper-toolbar-background: black;
+      background-color: black;
+      color: white;
+
+      }
+
+      .setMeasures {
+        font-family: 'Ubuntu', 'Roboto', sans-serif;
+        background-color: white;
+      }
+
+     .self-end {
+    /* This mixin (from iron-flex-layout) aligns the tabs to the
+       bottom of the toolbar. */
+       @apply(--layout-self-end);
+      }
+
+      paper-tabs {
+        background-color: black;
+        --paper-tabs-selection-bar-color: var(--tabs-colour, white);
+        color: var(--tabs-colour, white);
+        height: 30px;
+      }
+
+      paper-tab {
+        font-family: 'Ubuntu', 'Roboto', sans-serif;
+        --paper-tab-ink: white;
+      }
+
     </style>
+
+    <firebase-document
+           app-name="blaktip"
+           id="data-ref"
+           path="/users/[[uid]]/tanks/[[key]]/prefs"
+           data="{{prefsData}}">
+    </firebase-document>
 
     <paper-card heading="[[tank.name]] - [[tank.desc]]" image="../images/reef5.png" alt="reef" class="card">
       <div class="card-content">
@@ -68,19 +113,19 @@
        <p>Critical Measurements</p>
        <table class="formatTable">
        <tr>
-         <td><blaktip-temperature id="temperature" temperature="[[tank.temp]]"></blaktip-temperature></td>
-         <td><blaktip-specgrav id="specgrav" value="[[tank.specGrav]]"></blaktip-specgrav>  </td>
-         <td><blaktip-ph id="ph" value="[[tank.pH]]"></blaktip-ph>  </td>
-         <td><blaktip-alkalinity id="alkalinity" value="[[tank.alk]]"></blaktip-alkalinity></td>
+         <td hidden$="[[!tank.prefs.temp]]"><blaktip-temperature id="temperature" temperature="[[tank.temp]]"></blaktip-temperature></td>
+         <td hidden$="[[!tank.prefs.specGrav]]"><blaktip-specgrav id="specgrav" value="[[tank.specGrav]]"></blaktip-specgrav>  </td>
+         <td hidden$="[[!tank.prefs.ph]]"><blaktip-ph id="ph" value="[[tank.pH]]"></blaktip-ph>  </td>
+         <td hidden$="[[!tank.prefs.alk]]"><blaktip-alkalinity id="alkalinity" value="[[tank.alk]]"></blaktip-alkalinity></td>
       </tr>
       <tr>
-         <td><blaktip-calcium id="calcium" value="420"></blaktip-calcium>  </td>
-         <td><blaktip-magnesium id="magnesium" value="1280"></blaktip-magnesium>  </td>
-         <td><blaktip-phosphate id="phosphate" value=".005"></blaktip-phosohate>  </td>
-         <td><blaktip-ammonia id="ammonia" value="00.0"></blaktip-ammonia>  </td>
+         <td hidden$="[[!tank.prefs.cal]]"><blaktip-calcium id="calcium" value="[[tank.cal]]"></blaktip-calcium>  </td>
+         <td hidden$="[[!tank.prefs.mag]]"><blaktip-magnesium id="magnesium" value="[[tank.mag]]"></blaktip-magnesium>  </td>
+         <td hidden$="[[!tank.prefs.phos]]"><blaktip-phosphate id="phosphate" value="[[tank.phos]]"></blaktip-phosohate>  </td>
+         <td hidden$="[[!tank.prefs.ammon]]"><blaktip-ammonia id="ammonia" value="[[tank.ammon]]"></blaktip-ammonia>  </td>
        </tr>        
        </table>
-       <!-- <p>Other Measurements</p>
+       <!--<p>Other Measurements</p>
        <table class="formatTable">
        <tr>
          <td><blaktip-temperature id="temperature" temperature="[[temperature]]"></blaktip-temperature></td>
@@ -106,68 +151,48 @@
          <paper-icon-button on-tap="_openDeleteDialog" icon="delete"></paper-icon-button>
          <paper-icon-button on-tap="_openSettingsDialog" icon="icons:more-vert"><paper-icon-button>
        </div>   
-       
 
 
-
+       <!-- Settings Dialog -->
        <paper-dialog class="tankSettings" id="settingsDialog" modal>
        <div>
-         <firebase-document
-           app-name="blaktip"
-           id="data-ref"
-           path="/users/[[uid]]/tanks/[[key]]/prefs"
-           data="{{prefsData}}">
-         </firebase-document>
-         <h1>Tank Settings</h1>
-         <!-- <paper-toggle-button checked="true">Alkalinity</paper-toggle-button> -->
-<!-- <firebase-document
-      app-name="blaktip"
-      id="data-ref"
-      path="/users/[[user.uid]]/tanks/[[tank.$key]]/prefs"
-      data="{{prefs}}">
-    </firebase-document> -->    
-
-    <!-- <paper-input
-      id="title"
-      name="title"
-      label="Alkalinity"
-       value="{{prefsData.alk}}"
-       max="100"
-       char-counter>
-    </paper-input> -->
-         <p>Measurements</p>
-         <table>
-         <tr><td align="right"><span>Alkalinity</span></td><td><paper-toggle-button checked="{{prefsData.alk}}"></paper-toggle-button></td></tr>
-         <tr><td align="right"><span>Humidity</span></td><td><paper-toggle-button checked="{{prefsData.hum}}"></paper-toggle-button></td></tr>
-         <tr><td align="right"><span>Temperature</span></td><td><paper-toggle-button checked="{{prefsData.temp}}"></paper-toggle-button></td></tr>
-         <tr><td align="right"><span>Specific Gravity</span></td><td><paper-toggle-button checked="{{prefsData.specGrav}}"></paper-toggle-button></td></tr>
-         <tr><td align="right"><span>Calcium</span></td><td><paper-toggle-button checked="{{prefsData.cal}}"></paper-toggle-button></td></tr>
-         <tr><td align="right"><span>Phosphate</span></td><td><paper-toggle-button checked="{{prefsData.phos}}"></paper-toggle-button></td></tr>
-         <tr><td align="right"><span>Magnesium</span></td><td><paper-toggle-button checked="{{prefsData.mag}}"></paper-toggle-button></td></tr>
-         <tr><td align="right"><span>Ammonia</span></td><td><paper-toggle-button checked="{{prefsData.ammon}}"></paper-toggle-button></td></tr>
-         </table>
-
-         <!-- <paper-input label="Alkalinity" id="measureAlk" value="{{prefsData.alk}}"></paper-input> -->
-    
-                  <!-- <paper-input label="Humidity" id="measureHum" value="{{prefsData.hum}}"></paper-input>
- -->
-         <!-- <span>Temperature?</span><paper-toggle-button checked="{{prefsData.temp}}"></paper-toggle-button> -->
-         <!-- <paper-input label="Temperature" id="measureTemp" value="{{prefsData.temp}}"></paper-input> -->
-         <!-- <p>[[key]]-[[uid]]</p>
-         <p>[[prefsData.alk]]
-         <p>[[prefsData.hum]]</p>
-         <p>[[prefsData.temp]]</p> -->
-       
+         <paper-toolbar class="settingsDialog">
+           <h1 style="color: white">Edit settings for this tank...</h1>
+           <paper-tabs selected="{{selected}}">
+              <paper-tab>Measurements</paper-tab>
+              <paper-tab>Alerts</paper-tab>
+              <paper-tab>Threshold</paper-tab>
+           </paper-tabs>
+         </paper-toolbar>
+         <iron-pages selected="{{selected}}">
+         <div class="setMeasures">
+            Enable and specific measurements that you would like to record for this tank...
+            <table>
+            <tr><td align="right"><span>Alkalinity</span></td><td><paper-toggle-button checked="{{prefsData.alk}}"></paper-toggle-button></td>
+             <td><paper-toggle-button checked="{{prefsData.nitrate}}">Nitrate</paper-toggle-button></td></tr>
+            <tr><td align="right"><span>pH</span></td><td><paper-toggle-button checked="{{prefsData.ph}}"></paper-toggle-button></td>
+             <td><paper-toggle-button checked="{{prefsData.nitrite}}">Nitrite</paper-toggle-button></td></tr>
+            <tr><td align="right"><span>Temperature</span></td><td><paper-toggle-button checked="{{prefsData.temp}}"></paper-toggle-button></td>
+             <td><paper-toggle-button checked="{{prefsData.silica}}">Silica</paper-toggle-button></td></tr>
+            <tr><td align="right"><span>Specific Gravity</span></td><td><paper-toggle-button checked="{{prefsData.specGrav}}"></paper-toggle-button></td>
+             <td><paper-toggle-button checked="{{prefsData.iodine}}">Iodine</paper-toggle-button></td></tr>
+            <tr><td align="right"><span>Calcium</span></td><td><paper-toggle-button checked="{{prefsData.cal}}"></paper-toggle-button></td>
+             <td><paper-toggle-button checked="{{prefsData.strontium}}">Strontium</paper-toggle-button></td></tr>
+            <tr><td align="right"><span>Phosphate</span></td><td><paper-toggle-button checked="{{prefsData.phos}}"></paper-toggle-button></td>
+             <td><paper-toggle-button checked="{{prefsData.orp}}">ORP</paper-toggle-button></td></tr>
+            <tr><td align="right"><span>Magnesium</span></td><td><paper-toggle-button checked="{{prefsData.mag}}"></paper-toggle-button></td>
+             <td><paper-toggle-button checked="{{prefsData.boron}}">Boron</paper-toggle-button></td></tr>
+             <tr><td align="right"><span>Ammonia</span></td><td><paper-toggle-button checked="{{prefsData.ammon}}"></paper-toggle-button></td>
+             <td><paper-toggle-button checked="{{prefsData.iron}}">Iron</paper-toggle-button></td></tr>
+            </table>
+         </div>
+         <div class="setMeasures">COMING SOON!</div>
+         <div class="setMeasures">COMING SOON!</div>
+         </iron-pages>
          <div class="buttons">
-         <paper-button dialog-confirm autofocus>Close</paper-button>
+         <paper-button style="color: white"dialog-confirm autofocus>I'm Done</paper-button>
        </div>
        </paper-dialog>
-
-
-
-
-
-
 
 
        <paper-dialog id="deleteDialog" modal>
@@ -222,6 +247,13 @@
       is: 'blaktip-tank',
 
       properties: {
+        selected:{
+          type: Number,
+          value: 0,
+          notify: true,
+          reflectToAttribute: true
+        }, 
+
         editable: {
           type: Boolean,
           reflectToAttribute: true,
