@@ -13,6 +13,9 @@
 <link rel="import" href="../measurements/blaktip-phosphate.html">
 <link rel="import" href="../measurements/blaktip-ammonia.html">
 
+<link rel="import" href="../../bower_components/polymerfire/firebase-document.html">
+
+
 
 
 <link rel="import" href="../shared-styles.html">
@@ -37,6 +40,9 @@
         border-spacing: 0px 0px;
       }
 
+      paper-dialog.tankSettings {
+        width: 80%;
+      }
 
       iron-icon.star {
       --iron-icon-width: 16px;
@@ -49,9 +55,10 @@
       }
     </style>
 
-    <paper-card heading="[[title]]" image="../images/reef5.png" alt="reef" class="card">
+    <paper-card heading="[[tank.name]] - [[tank.desc]]" image="../images/reef5.png" alt="reef" class="card">
       <div class="card-content">
-       <div class="tank-rating">
+<!--        <p>[[tank.desc]]</p>
+ -->       <div class="tank-rating">
          <iron-icon class="star" icon="star"></iron-icon>
          <iron-icon class="star" icon="star"></iron-icon>
          <iron-icon class="star" icon="star"></iron-icon>
@@ -61,10 +68,10 @@
        <p>Critical Measurements</p>
        <table class="formatTable">
        <tr>
-         <td><blaktip-temperature id="temperature" temperature="[[temperature]]"></blaktip-temperature></td>
-         <td><blaktip-specgrav id="specgrav" value="1.023"></blaktip-specgrav>  </td>
-         <td><blaktip-ph id="ph" value="7.8"></blaktip-ph>  </td>
-         <td><blaktip-alkalinity id="alkalinity" value="7"></blaktip-alkalinity></td>
+         <td><blaktip-temperature id="temperature" temperature="[[tank.temp]]"></blaktip-temperature></td>
+         <td><blaktip-specgrav id="specgrav" value="[[tank.specGrav]]"></blaktip-specgrav>  </td>
+         <td><blaktip-ph id="ph" value="[[tank.pH]]"></blaktip-ph>  </td>
+         <td><blaktip-alkalinity id="alkalinity" value="[[tank.alk]]"></blaktip-alkalinity></td>
       </tr>
       <tr>
          <td><blaktip-calcium id="calcium" value="420"></blaktip-calcium>  </td>
@@ -73,7 +80,7 @@
          <td><blaktip-ammonia id="ammonia" value="00.0"></blaktip-ammonia>  </td>
        </tr>        
        </table>
-       <p>Other Measurements</p>
+       <!-- <p>Other Measurements</p>
        <table class="formatTable">
        <tr>
          <td><blaktip-temperature id="temperature" temperature="[[temperature]]"></blaktip-temperature></td>
@@ -87,7 +94,7 @@
          <td><blaktip-phosphate id="phosphate" value=".005"></blaktip-phosohate>  </td>
          <td><blaktip-ammonia id="ammonia" value="00.0"></blaktip-ammonia>  </td>
        </tr>        
-       </table>
+       </table> -->
       </div>
        <hr>
 
@@ -99,13 +106,69 @@
          <paper-icon-button on-tap="_openDeleteDialog" icon="delete"></paper-icon-button>
          <paper-icon-button on-tap="_openSettingsDialog" icon="icons:more-vert"><paper-icon-button>
        </div>   
-       <paper-dialog id="settingsDialog" modal>
-       <h1>Tank Settings</h1>
-       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-       <div class="buttons">
-       <paper-button dialog-confirm autofocus>Tap me to close</paper-button>
+       
+
+
+
+       <paper-dialog class="tankSettings" id="settingsDialog" modal>
+       <div>
+         <firebase-document
+           app-name="blaktip"
+           id="data-ref"
+           path="/users/[[uid]]/tanks/[[key]]/prefs"
+           data="{{prefsData}}">
+         </firebase-document>
+         <h1>Tank Settings</h1>
+         <!-- <paper-toggle-button checked="true">Alkalinity</paper-toggle-button> -->
+<!-- <firebase-document
+      app-name="blaktip"
+      id="data-ref"
+      path="/users/[[user.uid]]/tanks/[[tank.$key]]/prefs"
+      data="{{prefs}}">
+    </firebase-document> -->    
+
+    <!-- <paper-input
+      id="title"
+      name="title"
+      label="Alkalinity"
+       value="{{prefsData.alk}}"
+       max="100"
+       char-counter>
+    </paper-input> -->
+         <p>Measurements</p>
+         <table>
+         <tr><td align="right"><span>Alkalinity</span></td><td><paper-toggle-button checked="{{prefsData.alk}}"></paper-toggle-button></td></tr>
+         <tr><td align="right"><span>Humidity</span></td><td><paper-toggle-button checked="{{prefsData.hum}}"></paper-toggle-button></td></tr>
+         <tr><td align="right"><span>Temperature</span></td><td><paper-toggle-button checked="{{prefsData.temp}}"></paper-toggle-button></td></tr>
+         <tr><td align="right"><span>Specific Gravity</span></td><td><paper-toggle-button checked="{{prefsData.specGrav}}"></paper-toggle-button></td></tr>
+         <tr><td align="right"><span>Calcium</span></td><td><paper-toggle-button checked="{{prefsData.cal}}"></paper-toggle-button></td></tr>
+         <tr><td align="right"><span>Phosphate</span></td><td><paper-toggle-button checked="{{prefsData.phos}}"></paper-toggle-button></td></tr>
+         <tr><td align="right"><span>Magnesium</span></td><td><paper-toggle-button checked="{{prefsData.mag}}"></paper-toggle-button></td></tr>
+         <tr><td align="right"><span>Ammonia</span></td><td><paper-toggle-button checked="{{prefsData.ammon}}"></paper-toggle-button></td></tr>
+         </table>
+
+         <!-- <paper-input label="Alkalinity" id="measureAlk" value="{{prefsData.alk}}"></paper-input> -->
+    
+                  <!-- <paper-input label="Humidity" id="measureHum" value="{{prefsData.hum}}"></paper-input>
+ -->
+         <!-- <span>Temperature?</span><paper-toggle-button checked="{{prefsData.temp}}"></paper-toggle-button> -->
+         <!-- <paper-input label="Temperature" id="measureTemp" value="{{prefsData.temp}}"></paper-input> -->
+         <!-- <p>[[key]]-[[uid]]</p>
+         <p>[[prefsData.alk]]
+         <p>[[prefsData.hum]]</p>
+         <p>[[prefsData.temp]]</p> -->
+       
+         <div class="buttons">
+         <paper-button dialog-confirm autofocus>Close</paper-button>
        </div>
        </paper-dialog>
+
+
+
+
+
+
+
 
        <paper-dialog id="deleteDialog" modal>
        <h1>Delete</h1>
@@ -160,6 +223,12 @@
 
       properties: {
         editable: {
+          type: Boolean,
+          reflectToAttribute: true,
+          value: false
+        },
+
+        measureAlk: {
           type: Boolean,
           reflectToAttribute: true,
           value: false
@@ -246,13 +315,49 @@
         //this.$.body.textContent = body;
         //this.$.temperature.textContent = temperature;
       },
+     
+     commitChange: function(event) {
+        var changeCommits;
+
+        switch (event.detail) {
+          case 'save':
+            changeCommits = this.save();
+            break;
+          case 'delete':
+            changeCommits = this.delete();
+            break;
+          default:
+            changeCommits = Promise.resolve();
+            break;
+        }
+
+        if (this.$.query && this.$.query.refresh) {
+          changeCommits.then(() => {
+            this.$.query.refresh();
+          });
+        }
+      },
+
+      save: function() {
+        if (this.$.document.isNew &&
+            (this.editableLog.type ||
+             this.editableLog.description ||
+             this.editableLog.date)) {
+          return this.$.document.save(this.logsPath).then(() => {
+            this.$.document.reset();
+          });
+        }
+
+        return Promise.resolve();
+      },
 
 
       onInput() {
         this.async(function() {
-          this.title = this.$.title.innerText;
-          this.body = this.$.body.innerText;
-          this.temperature = this.$.temperature.innerText;
+          // this.title = this.$.title.innerText;
+          // this.body = this.$.body.innerText;
+          // this.temperature = this.$.temperature.innerText;
+          //this.measureAlk = this.$.measureAlk.innerText;
         });
       }
     })

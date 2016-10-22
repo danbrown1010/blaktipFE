@@ -9,6 +9,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html">
+
+<link rel="import" href="./blaktip-behavior.html">
+<link rel="import" href="./log/blaktip-log-editor.html">
 <link rel="import" href="./log/blaktip-log.html">
 
 
@@ -26,9 +32,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <blaktip-log type="observation" date="12/12/2016" description="Hello world"></blaktip-log>
-    <blaktip-log type="measurement-auto"></blaktip-log>
+    <!--<blaktip-log type="measurement-auto"></blaktip-log>
     <blaktip-log type="measurement-man"></blaktip-log>
-    <blaktip-log type="alert"></blaktip-log>
+    <blaktip-log type="alert"></blaktip-log> -->
 
     <!-- <div class="card">
       <div class="smallCircle">1</div>
@@ -56,15 +62,45 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </div> -->
     <paper-fab
        icon="add"
-       on-tap="create"
+       on-tap="_openAddLogEntryDialog"
        disabled="[[!online]]"
        aria-label="Add log entry...">
     </paper-fab>
+
+    <blaktip-log-editor
+       id="logEditor"
+       logEntry="{{editableLogEntry}}"
+       on-close="commitChange">
+    </blaktip-log-editor>
+
+
+    <paper-dialog id="addLogEntryDialog" heading="Add a log entry..." modal>
+      <form on-submit="addLogEntry" header="Entry to log" > 
+        <paper-input value="{{newLogEntry}}" placeholder="Enter here..."></paper-input>
+        <paper-button on-click="addLogEntry">Add</paper-button>
+      </form>
+    </paper-dialog>
+      
   </template>
 
   <script>
     Polymer({
-      is: 'logs-view'
+      is: 'logs-view',
+
+      behaviors: [Polymer.BlaktipAppBehavior],
+
+      get logEntriesPath() {
+        return '/logEntries/' + this.user.uid;
+      },
+
+      toEditableId: function(noteId) {
+        return this.logEntriesPath + '/' + logId;
+      },
+
+      _openAddLogEntryDialog: function() {
+        this.$.addLogEntryDialog.open();
+      }
+
     });
   </script>
 </dom-module>

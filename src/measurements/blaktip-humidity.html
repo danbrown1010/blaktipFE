@@ -7,12 +7,14 @@ Copyright (c) 2016 Blacktip Author - Dan Brown. All rights reserved.
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../shared-styles/blaktip-measurements-styles.html">
 
+<link rel="import" href="../blaktip-icons.html">
+
 <dom-module id="blaktip-humidity">
   <template>
     <style include="blaktip-measurements-styles"></style>
     <table>
     <tr><td rowspan="2">
-        <paper-icon-button id="hum" icon="icons:swap-vert"><paper-icon-button>
+        <paper-icon-button id="hum" icon="blaktip-svg-icons:humidity"><paper-icon-button>
         </td>
         <td>
         <paper-icon-item align="left" id="humidity">[[humidity]] %</paper-icon-item>

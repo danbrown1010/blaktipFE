@@ -7,15 +7,25 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../blaktip-icons.html">
 <link rel="import" href="../shared-styles/blaktip-measurements-styles.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+
 
 <dom-module id="blaktip-specgrav">
   <template>
-    <style include="blaktip-measurements-styles"></style>
+    <style include="blaktip-measurements-styles">
+      iron-icon.headerIcon {
+        height: 35px;
+        width: 35px;
+        
+      }
 
-
+      .headerDia {
+        background-color: white;
+      }
+    </style>
     <table>
     <tr><td rowspan="2">
-        <paper-icon-button id="specG" icon="blaktip-svg-icons:specGravity"><paper-icon-button>
+        <paper-icon-button on-tap="_openEditDialog" id="specG" icon="blaktip-svg-icons:specGravity"><paper-icon-button>
         </td>
         <td>
         <paper-icon-item align="left" id="specG">[[value]]</paper-icon-item>
@@ -26,12 +36,30 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
     </table>
 
     <!-- <paper-badge class="autoRead" for="specG" label="A"></paper-badge> -->
+    <paper-dialog id="editDialog" modal>
+       <div class="headerDia">
+         <h2><iron-icon class="headerIcon" icon="blaktip-svg-icons:specGravity"></iron-icon>
+         Edit Specific Gravity...</h2></div>
+       <div class=content>
+          <p>Specific gravity is the ratio of the density of a substance to the density of a reference substance; equivalently, it is the ratio of the mass of a substance to the mass of a reference substance for the same given volume. Apparent specific gravity is the ratio of the weight of a volume of the substance to the weight of an equal volume of the reference substance.<p>
+          <paper-input>New Value</paper-input>
+          <date-input>Date</date-input>
+       </div>
+       <div class="buttons">
+         <paper-button dialog-confirm autofocus>Tap me to close</paper-button>
+       </div>
+    </paper-dialog>
+
 
 
   </template>
   <script>
     Polymer({
       is: 'blaktip-specgrav',
+
+      _openEditDialog: function() {
+            this.$.editDialog.open();
+      },
     });
   </script>
 </dom-module>

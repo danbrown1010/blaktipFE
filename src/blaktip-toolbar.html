@@ -7,7 +7,10 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/gold-phone-input/gold-phone-input.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+
 
 <link rel="import" href="../bower_components/paper-badge/paper-badge.html">
 <link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
@@ -98,6 +101,10 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
       }
     </style>
     
+
+   
+
+
     <paper-icon-button disabled="[[!signedIn]]" on-tap="_openLeftDrawerDialog" icon="blaktip-svg-icons:logo"></paper-icon-button> 
     <p>Blaktip</p>
     <iron-icon icon="cloud" hidden$="[[!online]]"></iron-icon>
@@ -121,7 +128,7 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
           <div>
             <paper-button on-tap="_openNotificationsDialog" class="drawerItem"><iron-icon icon="feedback" item-icon></iron-icon>Notifications</paper-button>
             <paper-button on-tap="_openDevicesDialog" class="drawerItem"><iron-icon icon="communication:phonelink-setup" item-icon></iron-icon>Devices</paper-button>
-            <paper-button on-tap="_openSettingsDialog" class="drawerItem"><iron-icon icon="settings" item-icon></iron-icon>Settings</paper-button>
+            <paper-button on-tap="_openPreferencesDialog" class="drawerItem"><iron-icon icon="settings" item-icon></iron-icon>Preferences</paper-button>
             <paper-button class="drawerItem"><iron-icon icon="star" item-icon></iron-icon>Starred</paper-button>
           </div>
           <hr>
@@ -130,9 +137,27 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
     </paper-dialog>
 
 
-    <paper-dialog id="settingsDialog" modal>
-       <h1>Settings</h1>
-       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <firebase-document 
+        id="prefDocument"
+        app-name="blaktip"
+        location="/users/[[user.uid]]/preferences" 
+        data="{{preferenceData}}">
+    </firebase-document>
+    <firebase-query
+       id="query4"
+       app-name="blaktip"
+       path="/users/[[user.uid]]/preferences"
+       data="{{preferenceData}}">
+    </firebase-query>
+
+    <paper-dialog id="preferencesDialog" modal>
+       <h1>Preferences</h1>
+       <p>[[user.uid]]</p>
+       <p>ttt:[[preferenceData.$key]]</p>
+       <paper-input value="{{preferenceData.location}}" label="Location"></paper-input>
+       <paper-input value="2066664322" label="Mobile"></paper-input>
+       <paper-input value="{{preferenceData.subscriberType}}" label="Subscription Type"></paper-input>
+       <paper-input value="{{preferenceData.experience}}" label="Experience Level"></paper-input>
        <div class="buttons">
        <paper-button dialog-confirm autofocus>Tap me to close</paper-button>
        </div>
@@ -213,11 +238,20 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
       ],
 
       properties: {
+        preferenceData: {
+          type: Object,
+          notify: true
+        },
+
         signedIn: {
           type: Boolean,
           notify: true,
           value: false
         }
+      },
+
+      get preferencesPath() {
+         return '/preferences/' + this.user.uid;
       },
 
       computeLockIcon: function(signedIn) {
@@ -228,8 +262,8 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
             this.$.leftDialog.open();
       },
 
-      _openSettingsDialog: function() {
-            this.$.settingsDialog.open();
+      _openPreferencesDialog: function() {
+            this.$.preferencesDialog.open();
       },
 
       _openDevicesDialog: function() {

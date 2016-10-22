@@ -18,7 +18,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style include="shared-styles">
       :host {
         display: block;
-
         padding: 10px;
       }
 
@@ -33,7 +32,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        data="{{editableTank}}">
     </firebase-document> -->
     <!-- Todo fix UID probelme here - needs to use user.uid  -->
-    <firebase-query
+    <!-- <firebase-query
        id="query1"
        app-name="blaktip"
        path="/tanks/[[user.uid]]" 
@@ -57,13 +56,76 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <template is="dom-repeat" items="[[measurements]]" as="measurement">
           <blaktip-tank
            id$="[[tank.$key]]"
-           title="[[tank.title]]"
-           body="[[tank.body]]"
-           temperature="[[measurement.currentTemp]]"
+           title="[[tank.name]]"
+           body="[[tank.desc]"
+           temperature="[[tank.temp]]"
            on-tap="edit">
           </blaktip-tank>
         </template>
-     </template>
+     </template> -->
+
+
+
+
+
+
+    <firebase-query
+       id="query1"
+       app-name="blaktip"
+       path="/users/[[user.uid]]/tanks" 
+       data="{{data}}">
+    </firebase-query>
+
+      
+
+    <template is="dom-repeat" items="[[data]]" as="tank">
+
+    <!-- <firebase-document
+       id="document"
+       app-name="blaktip"
+       path="[[editableTankId]]"
+       data="{{editableTank}}">
+    </firebase-document>
+ -->
+
+   <!--  <firebase-document
+      id="data-ref"
+      path="[[articlePath.articles]]/[[articleId]]"
+      data="{{article}}">
+    </firebase-document> -->
+    <!-- <firebase-document
+      app-name="blaktip"
+      id="data-ref"
+      path="/users/[[user.uid]]/tanks/[[tank.$key]]/prefs"
+      data="{{prefs}}">
+    </firebase-document>
+
+    <paper-input
+      id="title"
+      name="title"
+      label="Alkalinity"
+       value="{{prefs.alk}}"
+       max="100"
+       char-counter>
+    </paper-input> -->
+
+          <!-- <firebase-document path="/users/[[user.uid]]/tanks/[[tank.$key]]/prefs" data="{{prefsData}}"> -->
+    
+          <!-- <div>
+            <input is="iron-input" bind-value="{{prefsData.alk}}">
+            <input is="iron-input" value="[[tank.$key]]">
+
+          </div> -->
+          <blaktip-tank key="[[tank.$key]]" uid="[[user.uid]]" tank="[[tank]]" prefs="[[tank.prefs]]"></blaktip-tank>
+    </template>
+
+
+
+
+
+
+
+
 
 
 
@@ -92,7 +154,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script>
     Polymer({
-      is: 'tanks-view'
+      is: 'tanks-view',
+
+      get tanksPath() {
+          return `/users/${this.user.uid}/tanks`;
+        },
+
+      toEditableId(tankId) {
+          return `${this.tanksPath}/${tankId}`;
+        },
     });
   </script>
 </dom-module>

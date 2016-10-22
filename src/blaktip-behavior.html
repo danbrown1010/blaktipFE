@@ -1,56 +1,50 @@
 <link rel="import" href="../bower_components/app-storage/app-network-status-behavior.html">
 <script>
-  (() => {
+  (function() {
     'use strict';
 
     Polymer.BlaktipAppBehaviorImpl = {
       properties: {
-        editableTankId: {
-          type: String,
-          notify: true
-        },
-
-        editableRoomId: {
+        editableLogEntryId: {
           type: String,
           notify: true
         }
       },
 
-      get tanksPath() {
+      get logsPath() {
         return '';
       },
 
-      get roomsPath() {
-        return '';
-      },
 
       get isEditable() {
         return true;
       },
 
-      toEditableId(tankId) {
-        return tankId;
+      toEditableId: function(logEntryId) {
+        return logEntryId;
       },
 
-      edit(event) {
+     edit: function(event) {
         if (this.isEditable) {
-          let tankElement = Polymer.dom(event).localTarget;
-          this.editableTankId = this.toEditableId(tankElement.id);
+          let logElement = Polymer.dom(event).localTarget;
+          this.editableLogEntryId = this.toEditableId(logElement.id);
 
           this.$.document.transactionsComplete.then(() => {
-            this.$.editor.open(tankElement);
+            this.$.logEditor.open(logElement);
           });
         }
       },
 
-      create() {
+      create: function() {
         if (this.isEditable) {
-          this.editableTankId = null;
-          this.$.editor.open();
+          this.editableLogEntryId = null;
+          this.$.logEditor.open();
         }
       },
 
-      commitChange(event) {
+      
+
+      commitChange: function(event) {
         var changeCommits;
 
         switch (event.detail) {
@@ -72,12 +66,12 @@
         }
       },
 
-      save() {
+      save: function() {
         if (this.$.document.isNew &&
-            (this.editableTank.title ||
-             this.editableTank.body ||
-             this.editableTank.temperature)) {
-          return this.$.document.save(this.tanksPath).then(() => {
+            (this.editableLog.type ||
+             this.editableLog.description ||
+             this.editableLog.date)) {
+          return this.$.document.save(this.logsPath).then(() => {
             this.$.document.reset();
           });
         }
@@ -85,7 +79,7 @@
         return Promise.resolve();
       },
 
-      delete() {
+      delete: function() {
         if (!this.$.document.isNew) {
           this.$.document.destroy();
         }
@@ -93,11 +87,11 @@
         return Promise.resolve();
       },
 
-      signIn: function() {
-         this.$.auth.signInWithPopup();
-      },
+      // signIn: function() {
+      //    this.$.auth.signInWithPopup();
+      // },
 
-      signOut() {
+      signOut: function() {
         if (this.$.auth) {
           this.$.auth.signOut();
         }
