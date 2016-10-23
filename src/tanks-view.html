@@ -11,7 +11,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="./shared-styles.html">
 
-<link rel="import" href="tank/blaktip-tank.html">
+<link rel="import" href="./tank/blaktip-tank.html">
+<link rel="import" href="./tank/blaktip-tank-editor.html">
+<link rel="import" href="./tank/blaktip-tank-behavior.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+
 
 <dom-module id="tanks-view">
   <template>
@@ -22,7 +26,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
     </style>
-
 
    <!--Tanks Query -->
    <!-- <firebase-document
@@ -65,10 +68,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
      </template> -->
 
 
-
-
-
-
     <firebase-query
        id="query1"
        app-name="blaktip"
@@ -76,79 +75,50 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        data="{{data}}">
     </firebase-query>
 
-      
-
     <template is="dom-repeat" items="[[data]]" as="tank">
-
-    <!-- <firebase-document
-       id="document"
-       app-name="blaktip"
-       path="[[editableTankId]]"
-       data="{{editableTank}}">
-    </firebase-document>
- -->
-
-   <!--  <firebase-document
-      id="data-ref"
-      path="[[articlePath.articles]]/[[articleId]]"
-      data="{{article}}">
-    </firebase-document> -->
-    <!-- <firebase-document
-      app-name="blaktip"
-      id="data-ref"
-      path="/users/[[user.uid]]/tanks/[[tank.$key]]/prefs"
-      data="{{prefs}}">
-    </firebase-document>
-
-    <paper-input
-      id="title"
-      name="title"
-      label="Alkalinity"
-       value="{{prefs.alk}}"
-       max="100"
-       char-counter>
-    </paper-input> -->
-
-          <!-- <firebase-document path="/users/[[user.uid]]/tanks/[[tank.$key]]/prefs" data="{{prefsData}}"> -->
-    
-          <!-- <div>
-            <input is="iron-input" bind-value="{{prefsData.alk}}">
-            <input is="iron-input" value="[[tank.$key]]">
-
-          </div> -->
           <blaktip-tank key="[[tank.$key]]" uid="[[user.uid]]" tank="[[tank]]" prefs="[[tank.prefs]]"></blaktip-tank>
     </template>
 
-
-
-
-
-
-
-
-
-
-
-    <!-- <div class="card">
-      <div class="circle">2</div>
-      <h1>Tank Two</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div>
-
-    <div class="card">
-      <div class="circle">3</div>
-      <h1>Tank Three</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div>
- -->
     <paper-fab
        icon="add"
-       on-tap="create"
+       on-tap="openDialog"
        disabled="[[!online]]"
        aria-label="Add tank...">
     </paper-fab>
+
+    <!-- <firebase-document
+        id="document"
+        app-name="blaktip"
+        path="[[editableTankId]]"
+        data="{{editableTank}}">
+    </firebase-document>
+ -->
+    <firebase-document
+           app-name="blaktip"
+           id="blaktipTanks"
+           path="/users/[[user.uid]]/tanks/"
+           data="{{tanksData}}">
+    </firebase-document>
+
+   <!--  <blaktip-tank-editor
+        id="editor"
+        note="{{editableTank}}"
+        on-close="commitChange">
+    </blaktip-tank-editor> -->
+
+    <paper-dialog id="addTankDialog" heading="Add a Tank" transition="core-transition-bottom" modal>
+      <form id="addForm" is="iron-form">
+        <!-- <paper-input id="name" label="Name" value=""></paper-input>
+        <paper-input id="desc" label="Description" value=""></paper-input> -->
+        <paper-input id="name" label="Name" value="{{tanksData.name}}"></paper-input>
+        <paper-input id="desc" label="Description" value="{{tanksData.desc}}"></paper-input>
+        <paper-input id="dateAdded" value="{{tanksData.dateAdded}}" hidden></paper-input>
+      </form>
+      <paper-button dialog-confirm autofocus on-click="submitTank">Add</paper-button>
+      <paper-button dialog-dismiss>Cancel</paper-button>
+    </paper-dialog>
+
+
 
   </template>
 
@@ -156,8 +126,72 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'tanks-view',
 
+      behaviors: [
+          Polymer.BlaktipTankBehavior
+        ],
+
+      _firebaseLoaded: function() {
+      if(!this.tanksData) {
+         this.set('tanksData', {});
+        }
+      },
+
+      openDialog: function() {
+         this.$.addTankDialog.open();
+        }, 
+
+      closeDialog: function() {
+         this.$.addTankDialog.close();
+        }, 
+
+
+      submitTank: function() {
+        if (!this.$.name.value.length) {
+           alert('Please write a title.');
+           return;
+        }
+
+        if (!this.$.desc.value.length) {
+            alert('Please write a question.');
+            return;
+        }
+
+        // this.$.tanksData.name = this.$.name.value;
+        // this.$.tanksData.desc = this.$.desc.value;
+
+        var time = new Date().getTime();
+        var date = new Date(time);
+
+        this.$.dateAdded.value = date.toString();
+
+        var promise2 = this.$.blaktipTanks.save(`/users/${this.user.uid}/tanks/`,null);
+
+        console.log("Added tank: "+date.toString());
+      
+
+        // var question = this.$.blaktipTanks.save({
+        // name: this.$.title.innerText,
+        // desc: this.$.content.innerText,
+        // user: {
+        //    uid: this.globals.user.uid
+        //    // username: this.globals.currentUser.github.username,
+        //    // avatar_url: this.globals.currentUser.github.cachedUserProfile.avatar_url,
+        //    // html_url: this.globals.currentUser.github.cachedUserProfile.html_url
+        // },
+        timestamp: new Date().getTime();
+        //this.$.addForm.reset();
+        this.closeDialog();
+        location.reload();
+        // });
+
+
+        this.$.name = null;
+        this.$.desc = null;
+      },
+
+
       get tanksPath() {
-          return `/users/${this.user.uid}/tanks`;
+          return `/users/${this.user.uid}/tanks/`;
         },
 
       toEditableId(tankId) {
