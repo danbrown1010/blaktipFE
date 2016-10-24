@@ -55,7 +55,7 @@
             <!-- <div>Added: [[tank.dateAdded]]</div> -->
             <div>Room ID: [[key]]</div>
            </td>
-           <td><paper-button on-click="openToast">Open toast</paper-button></td>
+           <td><!-- <paper-button on-click="openToast">Open toast</paper-button> --></td>
            <td align="right">
             <paper-icon-button on-tap="_openCamFeedDialog" icon="av:videocam"></paper-icon-button>
             <paper-icon-button on-tap="_openLightDialog" icon="lightbulb-outline" disabled></paper-icon-button>
@@ -102,7 +102,8 @@
        <paper-dialog id="camFeedDialog" modal>
        <h1>Web Camera Feed</h1>
        <p>FEED HERE: [[feed]]</p>
-       <iframe width="316" height="561" source="https://10.0.0.95" frameborder="0" scrolling="no" allowfullscreen></iframe>
+       
+       <!-- <iframe width="316" height="561" source="https://10.0.0.95" frameborder="0" scrolling="no" allowfullscreen></iframe> -->
        <div class="buttons">
        <paper-button dialog-confirm autofocus>Tap me to close</paper-button>
        </div>

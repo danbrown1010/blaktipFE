@@ -130,7 +130,7 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
           <hr>
           <div>
             <paper-button on-tap="_openNotificationsDialog" class="drawerItem"><iron-icon icon="feedback" item-icon></iron-icon>Notifications</paper-button>
-            <paper-button on-tap="_openDevicesDialog" class="drawerItem"><iron-icon icon="communication:phonelink-setup" item-icon></iron-icon>Devices</paper-button>
+            <paper-button on-tap="_openDevicesDialog" class="drawerItem"><iron-icon icon="communication:phonelink-setup" item-icon></iron-icon>Device</paper-button>
             <paper-button on-tap="_openPreferencesDialog" class="drawerItem"><iron-icon icon="settings" item-icon></iron-icon>Preferences</paper-button>
             <paper-button class="drawerItem"><iron-icon icon="star" item-icon></iron-icon>Starred</paper-button>
           </div>
@@ -180,8 +180,9 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
     </paper-dialog>
 
     <paper-dialog id="devicesDialog" modal>
-       <h1>Devices</h1>
-       <p>Lorem citation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+       <h1>Device</h1>
+       <p>Connecting to 10.0.0.95 - must be on local network...</p>
+       <iframe width="600" height="500" src="http://10.0.0.95/"></iframe>
        <div class="buttons">
        <paper-button dialog-confirm autofocus>Tap me to close</paper-button>
        </div>
