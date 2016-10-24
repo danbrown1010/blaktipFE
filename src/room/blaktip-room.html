@@ -4,11 +4,8 @@
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
-<!-- <link rel="import" href="../../bower_componets/periscope-embed-element/periscope-embed-element.html"> -->
-
-
-<link rel="import" href="../measurements/blaktip-temperature.html">
-<link rel="import" href="../measurements/blaktip-humidity.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-document.html">
+<link rel="import" href="../measurements/blaktip-measurements.html">
 <link rel="import" href="../shared-styles.html">
 
 
@@ -28,30 +25,48 @@
       }
     </style>
 
-    <paper-card heading="[[name]]" image="../images/reef4.png" alt="House" class="card white">
+    <firebase-document
+           app-name="blaktip"
+           id="data-ref"
+           path="/users/[[uid]]/rooms/[[key]]"
+           data="{{roomData}}">
+    </firebase-document>
+
+
+    <paper-card heading="{{roomData.name}}" image="../images/reef4.png" alt="House" class="card white">
       <div class="card-content">
       <p>Critical Measurements</p>
 
       <table class="formatTable">
       <tr>
          <td>
-         <blaktip-temperature id="temperature" temperature="[[temperature]]"></blaktip-temperature> 
+         <blaktip-room-temp id="roomTemp" uid="[[uid]]" key="[[key]]"></blaktip-room-temp>
          </td>
          <td>
-         <blaktip-humidity humidity="[[humidity]]" id="humidity"></blaktip-humidity> 
+         <blaktip-humidity id="humidity" uid="[[uid]]" key="[[key]]"></blaktip-humidity> 
          </td>
        </tr>
        </table>
 
-       <!-- Bottom Menu -->
        <hr>
-       <div align="right">
-         <paper-icon-button class="bottomBorder" on-tap="_openCamFeedDialog" icon="av:videocam"></paper-icon-button>
-         <paper-icon-button class="bottomBorder" on-tap="_openLightDialog" icon="lightbulb-outline"></paper-icon-button>
-         <paper-icon-button class="bottomBorder" on-tap="_openEditDialog" icon="create"></paper-icon-button>
-         <paper-icon-button class="bottomBorder" on-tap="_openDeleteDialog" icon="delete"></paper-icon-button>
-         <paper-icon-button class="bottomBorder" on-tap="_openSettingsDialog" icon="icons:more-vert"></paper-icon-button>
-       </div>   
+       <!-- Bottom Menu -->
+       <table width="95%">
+       <tr valign="bottom" ><td style="font-size:8px; vertical-align: middle"> 
+            <!-- <div>Added: [[tank.dateAdded]]</div> -->
+            <div>Room ID: [[key]]</div>
+           </td>
+           <td><paper-button on-click="openToast">Open toast</paper-button></td>
+           <td align="right">
+            <paper-icon-button on-tap="_openCamFeedDialog" icon="av:videocam"></paper-icon-button>
+            <paper-icon-button on-tap="_openLightDialog" icon="lightbulb-outline" disabled></paper-icon-button>
+            <paper-icon-button on-tap="_openSettingsDialog" icon="icons:more-vert"></paper-icon-button>
+           </td>
+       </tr>
+       </table>
+
+
+
+
        <paper-dialog id="settingsDialog" modal>
        <h1>Room Settings</h1>
        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
@@ -87,7 +102,7 @@
        <paper-dialog id="camFeedDialog" modal>
        <h1>Web Camera Feed</h1>
        <p>FEED HERE: [[feed]]</p>
-       <iframe width="316" height="561" source="https://www.periscope.tv/danbrown1010/1OwxWrZkkgpJQ" frameborder="0" scrolling="no" allowfullscreen></iframe>
+       <iframe width="316" height="561" source="https://10.0.0.95" frameborder="0" scrolling="no" allowfullscreen></iframe>
        <div class="buttons">
        <paper-button dialog-confirm autofocus>Tap me to close</paper-button>
        </div>
@@ -196,10 +211,10 @@
 
       onInput() {
         this.async(function() {
-          this.name = this.$.name.innerText;
-          this.humidity = this.$.humidity.innerText;
-          this.temperature = this.$.temperature.innerText;
-          this.feed = this.$.videoLink.feed;
+          // this.name = this.$.name.innerText;
+          // this.humidity = this.$.humidity.innerText;
+          // this.temperature = this.$.temperature.innerText;
+          // this.feed = this.$.videoLink.feed;
         });
       }
     })

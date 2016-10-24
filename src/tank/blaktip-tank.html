@@ -12,15 +12,15 @@
 <link rel="import" href="../../bower_components/gold-phone-input/gold-phone-input.html">
 
 
-
-<link rel="import" href="../measurements/blaktip-temperature.html">
+<link rel="import" href="../measurements/blaktip-measurements.html">
+<!-- <link rel="import" href="../measurements/blaktip-temperature.html">
 <link rel="import" href="../measurements/blaktip-ph.html">
 <link rel="import" href="../measurements/blaktip-specgrav.html">
 <link rel="import" href="../measurements/blaktip-alkalinity.html">
 <link rel="import" href="../measurements/blaktip-calcium.html">
 <link rel="import" href="../measurements/blaktip-magnesium.html">
 <link rel="import" href="../measurements/blaktip-phosphate.html">
-<link rel="import" href="../measurements/blaktip-ammonia.html">
+<link rel="import" href="../measurements/blaktip-ammonia.html"> -->
 
 <link rel="import" href="../../bower_components/polymerfire/firebase-document.html">
 
@@ -40,12 +40,12 @@
       position: relative;
       }
 
-      td:hover {background-color: #f5f5f5}
+      /*td:hover {background-color: #f5f5f5}*/
 
       .formatTable {
         font-family: 'Ubuntu', 'Roboto', sans-serif;
         align-self: center;
-        width: 60%;
+        width: 100%;
         border-spacing: 0px 0px;
       }
 
@@ -137,32 +137,47 @@
            data="{{prefsData}}">
     </firebase-document>
 
-    <firebase-document
+   <!--  <firebase-document
            app-name="blaktip"
            id="tankRef"
            path="/users/[[uid]]/tanks/[[key]]"
            data="{{tankData}}">
-    </firebase-document>
+    </firebase-document> -->
 
     <paper-card id="tankCard" heading="[[tank.name]]" image="../images/reef5.png" alt="reef" class="card">
       <paper-toast class="blaktipToast" id="toast" text="Measurement Auto-recorded!"></paper-toast>
       <div class="toastHolder" id="toastHolder"></div>
       <div class="card-content">
-       <p>[[tank.dateAdded]]</p>
-       <p>[[tank.desc]]</p>      
+       [[tank.desc]]      
        <p><b>Critical Measurements</b></p>
        <table class="formatTable">
        <tr>
-         <td hidden$="[[!tank.prefs.temp]]"><blaktip-temperature id="temperature" temperature="[[tank.temp]]"></blaktip-temperature></td>
-         <td hidden$="[[!tank.prefs.specGrav]]"><blaktip-specgrav id="specgrav" value="[[tank.specGrav]]"></blaktip-specgrav>  </td>
-         <td hidden$="[[!tank.prefs.ph]]"><blaktip-ph id="ph" value="[[tank.ph]]"></blaktip-ph>  </td>
-         <td hidden$="[[!tank.prefs.alk]]"><blaktip-alkalinity id="alkalinity" value="[[tank.alk]]"></blaktip-alkalinity></td>
+         <td hidden$="[[!tank.prefs.temp]]"><blaktip-temperature id="temperature" uid="[[uid]]" key="[[key]]"></blaktip-temperature></td>
+         <td hidden$="[[!tank.prefs.specGrav]]"><blaktip-specgrav id="specgrav" uid="[[uid]]" key="[[key]]"></blaktip-specgrav>  </td>
+         <td hidden$="[[!tank.prefs.ph]]"><blaktip-ph id="ph" uid="[[uid]]" key="[[key]]""></blaktip-ph>  </td>
+         <td hidden$="[[!tank.prefs.alk]]"><blaktip-alkalinity id="alkalinity" uid="[[uid]]" key="[[key]]"></blaktip-alkalinity></td>
       </tr>
       <tr>
-         <td hidden$="[[!tank.prefs.cal]]"><blaktip-calcium id="calcium" value="[[tank.cal]]"></blaktip-calcium>  </td>
-         <td hidden$="[[!tank.prefs.mag]]"><blaktip-magnesium id="magnesium" value="[[tank.mag]]"></blaktip-magnesium>  </td>
-         <td hidden$="[[!tank.prefs.phos]]"><blaktip-phosphate id="phosphate" value="[[tank.phos]]"></blaktip-phosohate>  </td>
-         <td hidden$="[[!tank.prefs.ammon]]"><blaktip-ammonia id="ammonia" value="[[tank.ammon]]"></blaktip-ammonia>  </td>
+         <td hidden$="[[!tank.prefs.cal]]"><blaktip-calcium id="calcium" uid="[[uid]]" key="[[key]]"></blaktip-calcium>  </td>
+         <td hidden$="[[!tank.prefs.mag]]"><blaktip-magnesium id="magnesium" uid="[[uid]]" key="[[key]]"></blaktip-magnesium>  </td>
+         <td hidden$="[[!tank.prefs.phos]]"><blaktip-phosphate id="phosphate" uid="[[uid]]" key="[[key]]"></blaktip-phosohate>  </td>
+         <td hidden$="[[!tank.prefs.ammon]]"><blaktip-ammonia id="ammonia" uid="[[uid]]" key="[[key]]"></blaktip-ammonia>  </td>
+       </tr>        
+       </table>
+
+       <p><b>Other Measurements</b></p>
+       <table class="formatTable">
+       <tr>
+         <td hidden$="[[!tank.prefs.nitrate]]"><blaktip-nitrate id="nitrate" uid="[[uid]]" key="[[key]]"></blaktip-nitrate></td>
+         <td hidden$="[[!tank.prefs.nitrite]]"><blaktip-nitrite id="nitrite" uid="[[uid]]" key="[[key]]"></blaktip-nitrite>  </td>
+         <td hidden$="[[!tank.prefs.silica]]"><blaktip-silica id="silica" uid="[[uid]]" key="[[key]]""></blaktip-silica>  </td>
+         <td hidden$="[[!tank.prefs.iodine]]"><blaktip-iodine id="iodine" uid="[[uid]]" key="[[key]]"></blaktip-iodine></td>
+      </tr>
+      <tr>
+         <td hidden$="[[!tank.prefs.strontium]]"><blaktip-strontium id="strontium" uid="[[uid]]" key="[[key]]"></blaktip-strontium>  </td>
+         <td hidden$="[[!tank.prefs.orp]]"><blaktip-orp id="orp" uid="[[uid]]" key="[[key]]"></blaktip-orp>  </td>
+         <td hidden$="[[!tank.prefs.boron]]"><blaktip-boron id="boron" uid="[[uid]]" key="[[key]]"></blaktip-boron>  </td>
+         <td hidden$="[[!tank.prefs.iron]]"><blaktip-iron id="iron" uid="[[uid]]" key="[[key]]"></blaktip-iron>  </td>
        </tr>        
        </table>
        <!--<p>Other Measurements</p>
@@ -204,7 +219,7 @@
 
 
 
-       <table width="100%">
+       <table width="95%">
        <tr valign="bottom" ><td style="font-size:8px; vertical-align: middle"> 
             <div>Added: [[tank.dateAdded]]</div>
             <div>Tank ID: [[key]]</div>
@@ -276,8 +291,15 @@
          </div>
          </iron-pages>
          <div class="buttons">
-         <paper-icon-button align="right" style="color: white;" on-tap="_openDeleteDialog" icon="delete"></paper-icon-button>
-         <paper-button style="color: white" dialog-confirm>I'm Done</paper-button>
+         <table width="100%">
+            <tr><td align="left">
+                <paper-icon-button align="right" style="color: white;" on-tap="_openDeleteDialog" icon="delete"></paper-icon-button>
+                </td>
+                <td align="right">
+                <paper-button style="color: white" dialog-confirm>I'm Done</paper-button>
+                </td>
+            </tr>
+          </table>
        </div>
        </paper-dialog>
 

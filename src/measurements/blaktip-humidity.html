@@ -7,20 +7,32 @@ Copyright (c) 2016 Blacktip Author - Dan Brown. All rights reserved.
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../shared-styles/blaktip-measurements-styles.html">
 
+<link rel="import" href="../../bower_components/polymerfire/firebase-document.html">
+
 <link rel="import" href="../blaktip-icons.html">
+
+
 
 <dom-module id="blaktip-humidity">
   <template>
     <style include="blaktip-measurements-styles"></style>
+
+
+    <firebase-document
+           app-name="blaktip"
+           id="roomRef"
+           path="/users/[[uid]]/rooms/[[key]]"
+           data="{{roomData}}">
+    </firebase-document>
+    
     <table>
     <tr><td rowspan="2">
         <paper-icon-button id="hum" icon="blaktip-svg-icons:humidity"><paper-icon-button>
         </td>
         <td>
-        <paper-icon-item align="left" id="humidity">[[humidity]] %</paper-icon-item>
+        <paper-input style="width: 60px;" align="left" label="Humidity" id="hum" value="{{roomData.hum}}" disabled><div suffix>
+        <font class="suffix">%</font></div></paper-input>
         </td>
-    </tr>
-    <tr><td class="updated">Humidity</td>
     </tr>
     </table>
 

@@ -9,20 +9,30 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
 <link rel="import" href="../shared-styles/blaktip-measurements-styles.html">
 <link rel="import" href="../blaktip-icons.html">
 
+<link rel="import" href="../../bower_components/polymerfire/firebase-document.html">
+
 <dom-module id="blaktip-magnesium">
   <template>
     <style include="blaktip-measurements-styles"></style>
   
+    <firebase-document
+           app-name="blaktip"
+           id="tankRef"
+           path="/users/[[uid]]/tanks/[[key]]"
+           data="{{tankData}}">
+    </firebase-document>
+
     <table>
     <tr><td rowspan="2">
         <paper-icon-button id="mag" icon="blaktip-svg-icons:magnesium"><paper-icon-button>
         </td>
         <td>
-        <paper-icon-item align="left" id="mag">[[value]] ppm</paper-icon-item>
+         <paper-input style="width: 80px;" align="left" label="Magnesium" id="mag" value="{{tankData.mag}}">
+         <div class="suffix" suffix><font class="suffix">ppm</font></div></paper-input>
         </td>
     </tr>
-    <tr><td class="updated">Magnesium</td>
-    </tr>
+    <!-- <tr><td class="updated">Magnesium</td>
+    </tr> -->
     </table>
 
     <!-- <paper-badge class="autoRead" for="mag" label="A"></paper-badge> -->

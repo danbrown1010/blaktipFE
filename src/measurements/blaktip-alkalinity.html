@@ -21,6 +21,9 @@ will change very little or not at all.
 <link rel="import" href="../blaktip-icons.html">
 <link rel="import" href="../shared-styles/blaktip-measurements-styles.html">
 
+<link rel="import" href="../../bower_components/polymerfire/firebase-document.html">
+
+
 <dom-module id="blaktip-alkalinity">
   <template>
     <style include="blaktip-measurements-styles">
@@ -30,19 +33,24 @@ will change very little or not at all.
 
     </style>
     <table>
+
+    <firebase-document
+           app-name="blaktip"
+           id="tankRef"
+           path="/users/[[uid]]/tanks/[[key]]"
+           data="{{tankData}}">
+    </firebase-document>
     
     <tr><td rowspan="2">
         <paper-icon-button id="alk" icon="blaktip-svg-icons:alkalinity"><paper-icon-button>
         </td>
         <td>
-        <paper-icon-item align="left" id="humidity">[[value]] dKH</paper-icon-item>
+        <paper-input style="width: 60px;" align="left" label="Alkalinity" id="alk" value="{{tankData.alk}}"><div suffix><font class="suffix">dKH</font></div></paper-input>
         </td>
     </tr>
-    <tr><td class="updated">Alkalinity</td>
+    <!-- <tr><td class="updated">Alkalinity</td>
     </tr>
-    </table>
-
-    <!-- <paper-badge class="autoRead" for="hum" label="A"></paper-badge> -->
+ -->    </table>
 
   </template>
   <script>

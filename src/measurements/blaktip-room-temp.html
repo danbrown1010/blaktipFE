@@ -6,30 +6,29 @@ Copyright (c) 2016 Blacktip Author - Dan Brown. All rights reserved.
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-document.html">
 <link rel="import" href="../shared-styles/blaktip-measurements-styles.html">
 
-<dom-module id="blaktip-temperature">
+
+
+<dom-module id="blaktip-room-temp">
   <template>
-    <style include="blaktip-measurements-styles">
-      /*.suffix {
-        font-size: 10px;
-      }*/
-    </style>
+    <style include="blaktip-measurements-styles"></style>
 
     <firebase-document
            app-name="blaktip"
            id="tankRef"
-           path="/users/[[uid]]/tanks/[[key]]"
-           data="{{tankData}}">
+           path="/users/[[uid]]/rooms/[[key]]"
+           data="{{roomData}}">
     </firebase-document>
 
 
     <table>
     <tr><td rowspan="2">
-        <paper-icon-button id="temp" icon="blaktip-svg-icons:temperature"><paper-icon-button><p>[[path]]</p>
+        <paper-icon-button id="temp" icon="blaktip-svg-icons:temperature"><paper-icon-button>
         </td>
         <td>
-        <paper-input style="width: 70px;" align="left" label="Temperature" id="temp" value="{{tankData.temp}}" disabled><div class="suffix" suffix><font class="suffix">°F</font></div></paper-input>
+        <paper-input style="width: 70px;" align="left" label="Temperature" id="rmtemp" value="{{roomData.temp}}" disabled><div class="suffix" suffix><font class="suffix">°F</font></div></paper-input>
         </td>
     </tr>
    <!--  <tr><td class="updated">Temperature</td>
@@ -41,7 +40,7 @@ Copyright (c) 2016 Blacktip Author - Dan Brown. All rights reserved.
   </template>
   <script>
     Polymer({
-      is: 'blaktip-temperature',
+      is: 'blaktip-room-temp',
     });
   </script>
 </dom-module>

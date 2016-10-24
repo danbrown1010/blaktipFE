@@ -19,7 +19,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 
 <link rel="import" href="../bower_components/app-storage/app-indexeddb-mirror/app-indexeddb-mirror.html">
-<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-document.html">
+
 
 
 
@@ -51,7 +52,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <firebase-query
        id="query3"
        app-name="blaktip"
-       path="/rooms/[[user.uid]]"
+       path="/users/[[user.uid]]/rooms"
        data="{{data}}">
     </firebase-query>
 
@@ -62,14 +63,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        persisted-data="{{persistedRooms}}">
     </app-indexeddb-mirror>
     <template is="dom-repeat" items="[[data]]" as="room">
-        <blaktip-room
+        <!-- <blaktip-room
            id$="[[room.$key]]"
+           uid="[[user.uid]]"
            name="[[room.name]]"
            temperature="[[room.temperature]]"
            humidity="[[room.humidity]]"
            feed="[[room.feed]]"
            on-tap="edit">
         </blaktip-room>
+ -->
+        <blaktip-room key$="[[room.$key]]" uid="[[user.uid]]"></blaktip-room>
 
         <!-- <div class="card">
       <div class="circle">1</div>

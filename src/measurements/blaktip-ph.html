@@ -17,17 +17,24 @@ bicarbonate (HCO3-1), carbonate (CO3-2) and hydroxide
   <template>
     <style include="blaktip-measurements-styles"></style>
 
+    <firebase-document
+           app-name="blaktip"
+           id="tankRef"
+           path="/users/[[uid]]/tanks/[[key]]"
+           data="{{tankData}}">
+    </firebase-document>
+
     <table>
     <tr><td rowspan="2">
         <paper-icon-button id="ph" icon="blaktip-svg-icons:pH"><paper-icon-button>
         </td>
         <td>
-        <paper-icon-item align="left" id="ph">[[value]]</paper-icon-item>
+        <paper-input style="width: 60px;" align="left" label="pH" id="ph" value="{{tankData.ph}}" disabled><div class="suffix" suffix></div></paper-input>
         </td>
     </tr>
-    <tr><td class="updated">pH</td>
+    <!-- <tr><td class="updated">pH</td>
     </tr>
-    </table>
+     --></table>
 
     <paper-badge class="autoRead" for="ph" label="A"></paper-badge>
 

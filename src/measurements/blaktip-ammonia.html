@@ -9,19 +9,28 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
 <link rel="import" href="../shared-styles/blaktip-measurements-styles.html">
 <link rel="import" href="../blaktip-icons.html">
 
+<link rel="import" href="../../bower_components/polymerfire/firebase-document.html">
+
 <dom-module id="blaktip-ammonia">
   <template>
     <style include="blaktip-measurements-styles"></style>
+
+
+    <firebase-document
+           app-name="blaktip"
+           id="tankRef"
+           path="/users/[[uid]]/tanks/[[key]]"
+           data="{{tankData}}">
+    </firebase-document>
+
 
     <table>
     <tr><td rowspan="2">
         <paper-icon-button id="amm" icon="blaktip-svg-icons:ammonia"><paper-icon-button>
         </td>
         <td>
-        <paper-icon-item align="left" id="amm">[[value]]</paper-icon-item>
+        <paper-input style="width: 80px;" align="left" label="Ammonia" id="ammon" value="{{tankData.ammon}}"><div suffix><font class="suffix">ppm</font></div></paper-input>
         </td>
-    </tr>
-    <tr><td class="updated">Ammonia</td>
     </tr>
     </table>
 

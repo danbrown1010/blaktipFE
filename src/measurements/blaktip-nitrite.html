@@ -5,50 +5,43 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../blaktip-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/hardware-icons.html">
 <link rel="import" href="../shared-styles/blaktip-measurements-styles.html">
-<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../blaktip-icons.html">
 
 <link rel="import" href="../../bower_components/polymerfire/firebase-document.html">
 
-
-
-<dom-module id="blaktip-specgrav">
+<dom-module id="blaktip-nitrite">
   <template>
-    <style include="blaktip-measurements-styles">
-      iron-icon.headerIcon {
-        height: 35px;
-        width: 35px;
-        
-      }
-
-      .headerDia {
-        background-color: white;
-      }
-    </style>
-
+    <style include="blaktip-measurements-styles"></style>
+  
     <firebase-document
            app-name="blaktip"
-           id="tankRef2"
+           id="tankRef"
            path="/users/[[uid]]/tanks/[[key]]"
            data="{{tankData}}">
     </firebase-document>
 
     <table>
     <tr><td rowspan="2">
-        <paper-icon-button on-tap="_openInputField" id="specG" icon="blaktip-svg-icons:specGravity"><paper-icon-button>
+        <paper-icon-button id="nitrite" icon="blaktip-svg-icons:magnesium"><paper-icon-button>
         </td>
         <td>
-        <paper-input style="width: 80px;" align="left" label="Spec Gravity" id="specG" value="{{tankData.specGrav}}"></paper-input>
+         <paper-input style="width: 80px;" align="left" label="Nitrite" id="nitrite" value="{{tankData.nitrite}}">
+         <div class="suffix" suffix><font class="suffix">ppm</font></div></paper-input>
         </td>
     </tr>
-    <!-- <tr><td class="updated">Specific Grav</td>
+    <!-- <tr><td class="updated">Magnesium</td>
     </tr> -->
     </table>
+
+    <!-- <paper-badge class="autoRead" for="mag" label="A"></paper-badge> -->
+
+
   </template>
   <script>
     Polymer({
-      is: 'blaktip-specgrav',
+      is: 'blaktip-nitrite',
     });
   </script>
 </dom-module>
