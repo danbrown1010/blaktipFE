@@ -9,7 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/google-chart/google-chart.html">
 
 <link rel="import" href="shared-styles.html">
 
@@ -22,35 +22,80 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 10px;
       }
     </style>
+<!-- 
+    <google-chart
+      type="gauge"
+      data='[["Label", "Value"],["Temp", 80],["pH", 55],["Salinity", 68]]'
+      options='{"width": 400,
+                "height": 120,
+                "redFrom": 90,
+                "redTo": 100,
+                "yellowFrom":75,
+                "yellowTo": 90,
+                "minorTicks": 5}'>
+    </google-chart>
+ -->
+    <google-chart
+      id="mutating-gauge"
+      type="gauge"
+      data='[["Label", "Value"],["Temp", 82]]'
+      options='{"width": 100,
+                "height": 100,
+                "max": 90,
+                "min": 70,
+                "redFrom": 87,
+                "redTo": 90,
+                "yellowFrom":83,
+                "yellowTo": 87,
+                "minorTicks": 2}'>
+    </google-chart>
+
+    <!-- <script>
+    (function() {
+      function getRandomGaugeValue(offset, factor) {
+        return offset + Math.round(factor * Math.random());
+      }
+
+      var gauge = this.$.mutating-gauge;
+
+      window.setInterval(function() {
+        gauge.data = [
+          ['Label', 'Value'],
+          ['Temp', getRandomGaugeValue(70, 90)]
+        ];
+      }, 3000);
+    }());
+    </script> -->
+
+  <google-chart
+    id="mutating-chart"
+    type="column"
+    options='{"title": "Random data",
+              "vAxis": {"minValue" : 0, "maxValue": 10},
+              "animation": {"duration": "1000"}}'
+    cols='[{"label": "Data", "type": "string"},{"label": "Value", "type": "number"}]'
+    rows='[ ["Col1", 5.0],["Col2", 5.0],["Col3", 5.0] ]'>
+  </google-chart>
+
+ <!--  <script>
+    (function() {
+      function getRandomValue() {
+        return Math.random() * 10;
+      }
+
+      var chart = document.getElementById('mutating-chart');
+
+      window.setInterval(function() {
+        chart.rows = [["Col1", getRandomValue()],
+                      ["Col2", getRandomValue()],
+                      ["Col3", getRandomValue()]];
+      }, 3000);
+    }());
+  </script>
+ -->
 
 
-    <!-- <div class="card">
-      <div class="circle">1</div>
-      <h1>Metric One</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div>
 
-    <div class="card">
-      <div class="circle">2</div>
-      <h1>Metric Two</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div>
-
-    <div class="card">
-      <div class="circle">3</div>
-      <h1>Metric Three</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div>
-
-    <div class="card">
-      <div class="circle">4</div>
-      <h1>Metric Four</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div> -->
   </template>
   <script>
     Polymer({
