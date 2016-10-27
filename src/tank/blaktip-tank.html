@@ -100,6 +100,7 @@
 
       .blaktipToast {
         background-color: green;
+        border-radius: 5px;
         width: 100px;
         height: 10px;
         text-align: center;
@@ -130,7 +131,7 @@
 
     </style>
 
-    <firebase-document
+    <!-- <firebase-document
            app-name="blaktip"
            id="data-ref"
            path="/users/[[uid]]/tanks/[[key]]/prefs"
@@ -141,6 +142,22 @@
            app-name="blaktip"
            id="tankRef"
            path="/users/[[uid]]/tanks/[[key]]"
+           data="{{tankData}}">
+    </firebase-document> -->
+
+   <firebase-document id="logDoc" app-name="blaktip"></firebase-document>
+   
+   <firebase-document
+           app-name="blaktip"
+           id="data-ref"
+           path="/tanks/[[uid]]/[[key]]/prefs"
+           data="{{prefsData}}">
+    </firebase-document>
+
+    <firebase-document
+           app-name="blaktip"
+           id="tankRef"
+           path="/tanks/[[uid]]/[[key]]"
            data="{{tankData}}">
     </firebase-document>
 
@@ -221,7 +238,7 @@
 
        <table width="95%">
        <tr valign="bottom" ><td style="font-size:8px; vertical-align: middle"> 
-            <div>Added: [[tank.dateAdded]]</div>
+            <div>Added: <script>var date = new Date(123243253654365); date.toString("MMM dd yy");</script></div>
             <div>Tank ID: [[key]]</div>
            </td>
            <td><paper-button on-click="openToast">Open toast</paper-button></td>
@@ -418,10 +435,25 @@
       observers: [
         'updateTextContent(title, body, temperature)'
       ],
+ 
+
 
       delete() {
-        // this.$.document.destroy();
+        var time = new Date().getTime();
+        var date = new Date(time);
+        var dateStr = date.toString();
+        this.$.logDoc.data = { type: 'Tank',
+                               action: 'Remove',
+                               other: this.key,
+                               name: this.tank.name,
+                               timestamp: time };
+       
+
+        this.$.logDoc.save('/logs/'+this.uid, null);
+        
+
         this.$.tankRef.destroy();
+      
         return Promise.resolve();
       },
 

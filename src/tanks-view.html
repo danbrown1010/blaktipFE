@@ -24,58 +24,56 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
         padding: 10px;
       }
-
     </style>
 
-   <!--Tanks Query -->
-   <!-- <firebase-document
-       id="document2"
-       app-name="blaktip"
-       path="[[editableTanksId]]"
-       data="{{editableTank}}">
-    </firebase-document> -->
-    <!-- Todo fix UID probelme here - needs to use user.uid  -->
-    <!-- <firebase-query
-       id="query1"
-       app-name="blaktip"
-       path="/tanks/[[user.uid]]" 
-       data="{{data}}">
-    </firebase-query>
-
-    <firebase-query
-       id="query2"
-       app-name="blaktip"
-       path="/measurements/[[user.uid]]"
-       data="{{measurements}}">
-    </firebase-query>
-    <app-indexeddb-mirror
-       session="user.uid"
-       key="rooms"
-       data="{{data}}"
-       persisted-data="{{persistedRooms}}">
-    </app-indexeddb-mirror>
-
-     <template is="dom-repeat" items="[[data]]" as="tank">
-        <template is="dom-repeat" items="[[measurements]]" as="measurement">
-          <blaktip-tank
-           id$="[[tank.$key]]"
-           title="[[tank.name]]"
-           body="[[tank.desc]"
-           temperature="[[tank.temp]]"
-           on-tap="edit">
-          </blaktip-tank>
-        </template>
-     </template> -->
-
-
-    <firebase-query
+   <!--  <firebase-query
        id="query1"
        app-name="blaktip"
        path="/users/[[user.uid]]/tanks" 
        data="{{data}}">
+    </firebase-query> -->
+
+    
+    <!-- <firebase-document
+           app-name="blaktip"
+           id="blaktipTanks"
+           path="/users/[[user.uid]]/tanks/"
+           data="{{tanksData}}">
+    </firebase-document> -->
+
+    <firebase-document
+           app-name="blaktip"
+           id="blaktipTanks2"
+           path="/tanks/[[user.uid]]/"
+           data="{{tanksData2}}">
+    </firebase-document>
+
+    <firebase-document
+           app-name="blaktip"
+           id="blaktipUserLog"
+           path="/logs/[[user.uid]]"
+           data="{{logData}}">
+    </firebase-document>
+
+    <firebase-document id="tankDoc" app-name="blaktip"></firebase-document>
+    <firebase-document id="logDoc" app-name="blaktip"></firebase-document>
+
+    <!-- <firebase-query
+       id="logQuery"
+       app-name="blaktip"
+       path="/logs/[[user.uid]]" 
+       data="{{logData}}">
+    </firebase-query> -->
+
+
+    <firebase-query
+       id="tankQuery"
+       app-name="blaktip"
+       path="/tanks/[[user.uid]]" 
+       data="{{tankData}}">
     </firebase-query>
 
-    <template is="dom-repeat" items="[[data]]" as="tank">
+    <template is="dom-repeat" items="[[tankData]]" as="tank">
           <blaktip-tank key="[[tank.$key]]" uid="[[user.uid]]" tank="[[tank]]" prefs="[[tank.prefs]]"></blaktip-tank>
     </template>
 
@@ -86,39 +84,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        aria-label="Add tank...">
     </paper-fab>
 
-    <!-- <firebase-document
-        id="document"
-        app-name="blaktip"
-        path="[[editableTankId]]"
-        data="{{editableTank}}">
-    </firebase-document>
- -->
-    <firebase-document
-           app-name="blaktip"
-           id="blaktipTanks"
-           path="/users/[[user.uid]]/tanks/"
-           data="{{tanksData}}">
-    </firebase-document>
-
-   <!--  <blaktip-tank-editor
-        id="editor"
-        note="{{editableTank}}"
-        on-close="commitChange">
-    </blaktip-tank-editor> -->
-
     <paper-dialog id="addTankDialog" heading="Add a Tank" transition="core-transition-bottom" modal>
       <form id="addForm" is="iron-form">
-        <!-- <paper-input id="name" label="Name" value=""></paper-input>
-        <paper-input id="desc" label="Description" value=""></paper-input> -->
-        <paper-input id="name" label="Name" value="{{tanksData.name}}"></paper-input>
-        <paper-input id="desc" label="Description" value="{{tanksData.desc}}"></paper-input>
-        <paper-input id="dateAdded" value="{{tanksData.dateAdded}}" hidden></paper-input>
+        <paper-input id="name" label="Name" value="{{tanksData2.name}}"></paper-input>
+        <paper-input id="desc" label="Description" value="{{tanksData2.desc}}"></paper-input>
+        <paper-input id="dateAdded" value="{{tanksData2.dateAdded}}" hidden></paper-input>
+        <!-- <paper-input id="logEntryType" value="{{logData.type}}" hidden></paper-input>
+        <paper-input id="logAction" value="{{logData.action}}" hidden></paper-input>
+        <paper-input id="logTimestamp" value="{{logData.timestamp}}" hidden></paper-input>
+       -->
       </form>
-      <paper-button dialog-confirm autofocus on-click="submitTank">Add</paper-button>
+      <paper-button dialog-confirm autofocus on-click="addTank">Add</paper-button>
       <paper-button dialog-dismiss>Cancel</paper-button>
     </paper-dialog>
-
-
 
   </template>
 
@@ -145,48 +123,106 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }, 
 
 
-      submitTank: function() {
-        if (!this.$.name.value.length) {
-           alert('Please write a title.');
-           return;
-        }
+      addTank: function() {
 
-        if (!this.$.desc.value.length) {
-            alert('Please write a question.');
-            return;
-        }
+         //set path to null somewhere to avoid overwriting data, I recommend doing it here since save's path update is lazy
+         this.$.tankDoc.path = null;
+         this.$.logDoc.path = null;
+
+         // this.$.tanksData.name = this.$.name.value;
+         // this.$.tanksData.desc = this.$.desc.value;
+
+         var time = new Date().getTime();
+         var date = new Date(time);
+         
+        
+         var newTank = {};
+         newTank['name'] = this.$.name.value;
+         newTank['desc'] = this.$.desc.value;
+         newTank['dateAdded'] = time;
+
+         var newLogEntry ={};
+         newLogEntry['type'] = 'Tank';
+         newLogEntry['action'] = 'Add';
+         newLogEntry['timestamp'] = newTank['dateAdded'];
+         newLogEntry['name'] = newTank['name']; 
+         newLogEntry['other'] = "Key yet to be issued"; 
+         
+         
+         
+        
+        this.$.tankDoc.data = newTank;
+        // this.$.logDoc.data = { type: 'Tank',
+        //                        action: 'Add',
+        //                        timeStamp: newTank['dateAdded'],
+        //                        name: this.$.name.value };
+
+        this.$.logDoc.data = newLogEntry;
+
+    //call save, if the second parameter isalsey it'll call push to the first parameter if it's truthy it'll set the data to firstparam/secondparam
+        this.$.tankDoc.save('/tanks/'+this.user.uid, null);
+        this.$.logDoc.save('/logs/'+this.user.uid, null);
+
+
+         this.$.name.value = null;
+         this.$.desc.value = null;
+
+
+
+        // if (!this.$.name.value.length) {
+        //    alert('Please write a title.');
+        //    return;
+        // }
+
+        // if (!this.$.desc.value.length) {
+        //     alert('Please write a question.');
+        //     return;
+        // }
 
         // this.$.tanksData.name = this.$.name.value;
         // this.$.tanksData.desc = this.$.desc.value;
 
-        var time = new Date().getTime();
-        var date = new Date(time);
+         // var time = new Date().getTime();
+         // var date = new Date(time);
 
-        this.$.dateAdded.value = date.toString();
+        // this.$.dateAdded.value = date.toString();
+        // this.$.logEntryType.value = "Tank";
+        // this.$.logAction.value = "Add";
+        // this.$.logTimestamp.value = date.toString()
 
-        var promise2 = this.$.blaktipTanks.save(`/users/${this.user.uid}/tanks/`,null);
+        // this.$.logData.type.value = date.toString();
 
-        console.log("Added tank: "+date.toString());
-      
+        // var promise2 = this.$.blaktipTanks.save(`/users/${this.user.uid}/tanks/`,null);
+        // var logPromise = this.$.logQuery.save(`/logs/${this.user.uid}/`,null);
 
-        // var question = this.$.blaktipTanks.save({
-        // name: this.$.title.innerText,
-        // desc: this.$.content.innerText,
-        // user: {
-        //    uid: this.globals.user.uid
-        //    // username: this.globals.currentUser.github.username,
-        //    // avatar_url: this.globals.currentUser.github.cachedUserProfile.avatar_url,
-        //    // html_url: this.globals.currentUser.github.cachedUserProfile.html_url
-        // },
-        timestamp: new Date().getTime();
-        //this.$.addForm.reset();
-        this.closeDialog();
-        location.reload();
+        // this.push('gamesData', {
+        //     gameId: time,
+        //     maxPlayers: time,
+        //     players: date        
         // });
 
+        // this.push('tanks', {
+        //   label: 'false',
+        //   isComplete: 'false'
+        // });
 
-        this.$.name = null;
-        this.$.desc = null;
+        // var tankPromise2 = this.$.tankQuery.save(`/tanks/${this.user.uid}/`,null);
+
+        //logPromise.reset();
+        //tankPromise2.reset();
+        //this.$.addForm.reset();
+
+
+
+
+        // location.reload();
+        // this.closeDialog();
+        
+        // // });
+
+
+         
+        
       },
 
 

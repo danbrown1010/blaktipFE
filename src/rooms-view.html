@@ -35,26 +35,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-   <!--Rooms Query -->
-   <!-- <firebase-document
-       id="document2"
-       app-name="blaktip"
-       path="[[editableRoomsId]]"
-       data="{{editableRoom}}">
-    </firebase-document> -->
-    <!-- <firebase-query
-       id="query3"
-       app-name="blaktip"
-       path="/rooms/wSVuDv51X4Xxn4K2hncytcfG3n43"
-       data="{{data}}">
-    </firebase-query> -->
-
     <firebase-query
        id="query3"
        app-name="blaktip"
        path="/users/[[user.uid]]/rooms"
        data="{{data}}">
     </firebase-query>
+
+     <firebase-document
+           app-name="blaktip"
+           id="blaktipRooms"
+           path="/users/[[user.uid]]/rooms/"
+           data="{{roomsData}}">
+    </firebase-document>
 
      <app-indexeddb-mirror
        session="[[userId]]"
@@ -63,65 +56,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        persisted-data="{{persistedRooms}}">
     </app-indexeddb-mirror>
     <template is="dom-repeat" items="[[data]]" as="room">
-        <!-- <blaktip-room
-           id$="[[room.$key]]"
-           uid="[[user.uid]]"
-           name="[[room.name]]"
-           temperature="[[room.temperature]]"
-           humidity="[[room.humidity]]"
-           feed="[[room.feed]]"
-           on-tap="edit">
-        </blaktip-room>
- -->
         <blaktip-room key$="[[room.$key]]" uid="[[user.uid]]"></blaktip-room>
-
-        <!-- <div class="card">
-      <div class="circle">1</div>
-      <h1>Room 1</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div> -->
     </template>
     
-
-
-
-    <!-- <div class="card"> -->
-    <!-- <paper-card heading="[[name]]" image="/images/reef4.png" alt="House" class="card" style="margin-bottom:8px;">
-      <div class="card-actions">
-      <table class="formatTable">
-      <th colspan="2" align="left">Critical Measurements</th>
-      <tr><td>
-         <blaktip-temperature id="temperature" temperature="[[temperature]]"></blaktip-temperature> 
-         </td><td>
-         <blaktip-humidity humidity="[[humidity]]" id="humidity"></blaktip-humidity> 
-         </td></tr>
-       </table>
-       <paper-input label="[[feed]]" id="feed" disabled></paper-input>
-         <a href="[[feed]]">
-            <paper-icon-button icon="av:videocam"></paper-icon-button>
-         </a>
-       </div>
-    </paper-card> -->
-    <!-- </div> -->
-
-    <!-- <div class="card">
-      <div class="circle">1</div>
-      <h1>Room One</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div> -->
-
-    <!--div class="card">
-      <div class="circle">2</div>
-      <h1>Room Two</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div> -->
+    <paper-dialog id="addRoomDialog" heading="Add a Room" transition="core-transition-bottom" modal>
+      <form id="addForm" is="iron-form">
+        <paper-input id="name" label="Name" value="{{roomsData.name}}"></paper-input>
+        <paper-input id="desc" label="Description" value="{{roomsData.desc}}"></paper-input>
+        <paper-input id="dateAdded" value="{{roomsData.dateAdded}}" hidden></paper-input>
+      </form>
+      <paper-button dialog-confirm autofocus on-click="submitRoom">Add</paper-button>
+      <paper-button dialog-dismiss>Cancel</paper-button>
+    </paper-dialog>
 
     <paper-fab
        icon="add"
-       on-tap="create"
+       on-tap="openDialog"
        disabled="[[!online]]"
        aria-label="Add room...">
     </paper-fab>
@@ -133,15 +83,46 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'rooms-view',
 
-      // properties: {
-      //   userId: {
-      //     type: String,
-      //     notify: true,
-      //     value: ''
-      //   }
-      // },
+      openDialog: function() {
+         this.$.addRoomDialog.open();
+      }, 
 
+      closeDialog: function() {
+         this.$.addRoomDialog.close();
+      }, 
+
+      submitRoom: function() {
+        if (!this.$.name.value.length) {
+           alert('Please enter a name.');
+           return;
+        }
+
+        if (!this.$.desc.value.length) {
+            alert('Please enter a description.');
+            return;
+        }
+        var time = new Date().getTime();
+        var date = new Date(time);
+
+        this.$.dateAdded.value = date.toString();
+
+        var promise2 = this.$.blaktipRooms.save(`/users/${this.user.uid}/rooms/`,null);
+
+        console.log("Added room: "+date.toString());
       
+
+        timestamp: new Date().getTime();
+        //this.$.addForm.reset();
+        this.closeDialog();
+        location.reload();
+        // });
+
+
+        this.$.name = null;
+        this.$.desc = null;
+      },
+
+
       get roomsPath() {
          return '/rooms/' + this.user.uid;
       }

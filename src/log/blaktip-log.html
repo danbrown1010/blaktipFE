@@ -84,7 +84,7 @@
 
 
     </style>
-    <template is="dom-if" if="[[editable]]">
+    <!-- <template is="dom-if" if="[[editable]]">
       <h2> FORM STARTS HERE </h2>
       <input is="iron-input"
          bind-value="{{type}}">
@@ -96,16 +96,16 @@
          bind-value="{{description}}">
       </iron-autogrow-textarea>
     </template>
+ -->
 
-
-    <template is="dom-if" if="[[!editable]]">
+    <!-- <template is="dom-if" if="[[!editable]]"> -->
     <div class="card">
-      <paper-input value="[[type]]" id="type"></paper-input>
-      <paper-input value="[[description]]" id="description"></paper-input>
+      <!-- <paper-input value="[[logItem.type]]" id="type" disabled></paper-input>
+      <paper-input value="[[logItem.action]]" id="action" disabled></paper-input> -->
       <!-- <div>[[type]]</div> -->
-      <h4> [[date]] : [[description]]</h4>
+      <h6> [[logItem.type]]: [[logItem.action]] :[[logItem.timestamp]] : [[logItem.name]] : [[logItem.other]]</h6>
     </div>
-    </template>
+    <!-- </template> -->
 
   </template>
   <script>

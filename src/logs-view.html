@@ -12,10 +12,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/iron-input/iron-input.html">
 <link rel="import" href="../bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="./blaktip-behavior.html">
-<link rel="import" href="./log/blaktip-log-editor.html">
-<link rel="import" href="./log/blaktip-log.html">
+
+<!-- <link rel="import" href="./blaktip-behavior.html"> -->
+<!-- <link rel="import" href="./log/blaktip-log-editor.html"> -->
+<link rel="import" href="./log/blaktip-log-entry.html">
 
 
 <dom-module id="logs-view">
@@ -25,22 +27,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
         padding: 0px;
       }
-
-      .card {
-        @apply(--layout-horizontal);
-      }
     </style>
 
-    <blaktip-log type="observation" date="12/12/2016" description="Hello world"></blaktip-log>
+    <firebase-query
+       id="logQuery"
+       app-name="blaktip"
+       path="/logs/[[user.uid]]" 
+       data="{{logData}}"
+       limitToFirst="3">
+    </firebase-query>
+
+    <template is="dom-repeat" items="[[logData]]" as="logEntry" sort="_reverseSort">
+        <div class="logEntryCard">
+        <blaktip-log-entry 
+             type="[[logEntry.action]] [[logEntry.type]]" 
+             name="[[logEntry.name]]" 
+             timestamp="[[logEntry.timestamp]]" 
+             other="[[logEntry.other]]">
+        </blaktip-log-entry>
+        </div>
+    </template>
+
+
+    
     <!--<blaktip-log type="measurement-auto"></blaktip-log>
     <blaktip-log type="measurement-man"></blaktip-log>
     <blaktip-log type="alert"></blaktip-log> -->
 
     <!-- <div class="card">
       <div class="smallCircle">1</div>
-      <h4> Log One : Ut labores minimum atomorum pro. Laudem tibique ut has.</h4>
-    </div>
-    <div class="card">
+      <h4> [[user.uid]] : Ut labores minimum atomorum pro. Laudem tibique ut has.</h4>
+    </div> -->
+    <!--<div class="card">
       <div class="smallCircle">2</div>
       <h4> Log Two : Ut labores minimum atomorum pro. Laudem tibique ut has.</h4>
     </div>
@@ -67,7 +85,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        aria-label="Add log entry...">
     </paper-fab>
 
-    <blaktip-log-editor
+   <!--  <blaktip-log-editor
        id="logEditor"
        logEntry="{{editableLogEntry}}"
        on-close="commitChange">
@@ -79,7 +97,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-input value="{{newLogEntry}}" placeholder="Enter here..."></paper-input>
         <paper-button on-click="addLogEntry">Add</paper-button>
       </form>
-    </paper-dialog>
+    </paper-dialog> -->
       
   </template>
 
@@ -99,6 +117,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _openAddLogEntryDialog: function() {
         this.$.addLogEntryDialog.open();
+      },
+
+      _reverseSort: function(a,b) {
+        return b.timestamp-a.timestamp;
       }
 
     });

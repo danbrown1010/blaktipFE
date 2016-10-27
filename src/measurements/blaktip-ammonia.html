@@ -19,9 +19,11 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
     <firebase-document
            app-name="blaktip"
            id="tankRef"
-           path="/users/[[uid]]/tanks/[[key]]"
+           path="/tanks/[[uid]]/[[key]]"
            data="{{tankData}}">
     </firebase-document>
+
+    <firebase-document id="logDoc" app-name="blaktip"></firebase-document>
 
 
     <table>
@@ -29,7 +31,7 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
         <paper-icon-button id="amm" icon="blaktip-svg-icons:ammonia"><paper-icon-button>
         </td>
         <td>
-        <paper-input style="width: 80px;" align="left" label="Ammonia" id="ammon" value="{{tankData.ammon}}"><div suffix><font class="suffix">ppm</font></div></paper-input>
+        <paper-input style="width: 80px;" align="left" on-keypress="_keyPressed" label="Ammonia" id="ammon" value="{{tankData.ammon}}"><div suffix><font class="suffix">ppm</font></div></paper-input>
         </td>
     </tr>
     </table>
@@ -42,6 +44,21 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
   <script>
     Polymer({
       is: 'blaktip-ammonia',
+
+      _keyPressed: function(e) {
+        var time = new Date().getTime();
+        if (  e.charCode === 13 || e.keyCode == 9 ) {
+                // && false === this.off) {
+            console.log("Tab or Enter Button Pressed!");
+            this.$.logDoc.data = { type: 'Measurement',
+                               action: 'Update',
+                               other: this.$.ammon.value,
+                               name: "ammon",
+                               timestamp: time};
+
+            this.$.logDoc.save('/logs/'+this.uid, null);
+        }
+      }
     });
   </script>
 </dom-module>

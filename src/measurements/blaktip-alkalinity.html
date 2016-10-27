@@ -37,15 +37,17 @@ will change very little or not at all.
     <firebase-document
            app-name="blaktip"
            id="tankRef"
-           path="/users/[[uid]]/tanks/[[key]]"
+           path="/tanks/[[uid]]/[[key]]"
            data="{{tankData}}">
     </firebase-document>
+
+    <firebase-document id="logDoc" app-name="blaktip"></firebase-document>
     
     <tr><td rowspan="2">
         <paper-icon-button id="alk" icon="blaktip-svg-icons:alkalinity"><paper-icon-button>
         </td>
         <td>
-        <paper-input style="width: 60px;" align="left" label="Alkalinity" id="alk" value="{{tankData.alk}}"><div suffix><font class="suffix">dKH</font></div></paper-input>
+        <paper-input style="width: 60px;" align="left" on-keypress="_keyPressed" label="Alkalinity" id="alk" value="{{tankData.alk}}"><div suffix><font class="suffix">dKH</font></div></paper-input>
         </td>
     </tr>
     <!-- <tr><td class="updated">Alkalinity</td>
@@ -56,6 +58,21 @@ will change very little or not at all.
   <script>
     Polymer({
       is: 'blaktip-alkalinity',
+
+      _keyPressed: function(e) {
+        var time = new Date().getTime();
+        if (  e.charCode === 13 || e.keyCode == 9 ) {
+                // && false === this.off) {
+            console.log("Tab or Enter Button Pressed!");
+            this.$.logDoc.data = { type: 'Measurement',
+                               action: 'Update',
+                               other: this.$.alk.value,
+                               name: "alk",
+                               timestamp: time};
+
+            this.$.logDoc.save('/logs/'+this.uid, null);
+        }
+      }
     });
   </script>
 </dom-module>

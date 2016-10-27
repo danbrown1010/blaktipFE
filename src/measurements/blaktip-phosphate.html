@@ -28,16 +28,17 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
     <firebase-document
            app-name="blaktip"
            id="tankRef"
-           path="/users/[[uid]]/tanks/[[key]]"
+           path="/tanks/[[uid]]/[[key]]"
            data="{{tankData}}">
     </firebase-document>
+    <firebase-document id="logDoc" app-name="blaktip"></firebase-document>
 
     <table>
     <tr><td rowspan="2">
         <paper-icon-button id="pho" icon="blaktip-svg-icons:phosphate"><paper-icon-button>
         </td>
         <td>
-           <paper-input style="width: 80px;" align="left" label="Phosphate" id="phos" value="{{tankData.phos}}"><div class="suffix" suffix><font class="suffix">ppm</font></div></paper-input>
+           <paper-input style="width: 80px;" align="left" on-keypress="_keyPressed" label="Phosphate" id="phos" value="{{tankData.phos}}"><div class="suffix" suffix><font class="suffix">ppm</font></div></paper-input>
         </td>
     </tr>
     <!-- <tr><td class="updated">Phosphate</td>
@@ -53,6 +54,21 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
   <script>
     Polymer({
       is: 'blaktip-phosphate',
+
+      _keyPressed: function(e) {
+        var time = new Date().getTime();
+        if (  e.charCode === 13 || e.keyCode == 9 ) {
+                // && false === this.off) {
+            console.log("Tab or Enter Button Pressed!");
+            this.$.logDoc.data = { type: 'Measurement',
+                               action: 'Update',
+                               other: this.$.phos.value,
+                               name: "phos",
+                               timestamp: time};
+
+            this.$.logDoc.save('/logs/'+this.uid, null);
+        }
+      }
     });
   </script>
 </dom-module>

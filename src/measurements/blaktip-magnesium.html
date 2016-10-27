@@ -18,16 +18,18 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
     <firebase-document
            app-name="blaktip"
            id="tankRef"
-           path="/users/[[uid]]/tanks/[[key]]"
+           path="/tanks/[[uid]]/[[key]]"
            data="{{tankData}}">
     </firebase-document>
+    <firebase-document id="logDoc" app-name="blaktip"></firebase-document>
+
 
     <table>
     <tr><td rowspan="2">
         <paper-icon-button id="mag" icon="blaktip-svg-icons:magnesium"><paper-icon-button>
         </td>
         <td>
-         <paper-input style="width: 80px;" align="left" label="Magnesium" id="mag" value="{{tankData.mag}}">
+         <paper-input style="width: 80px;" align="left" on-keypress="_keyPressed" label="Magnesium" id="mag" value="{{tankData.mag}}">
          <div class="suffix" suffix><font class="suffix">ppm</font></div></paper-input>
         </td>
     </tr>
@@ -42,6 +44,21 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
   <script>
     Polymer({
       is: 'blaktip-magnesium',
+
+      _keyPressed: function(e) {
+        var time = new Date().getTime();
+        if (  e.charCode === 13 || e.keyCode == 9 ) {
+                // && false === this.off) {
+            console.log("Tab or Enter Button Pressed!");
+            this.$.logDoc.data = { type: 'Measurement',
+                               action: 'Update',
+                               other: this.$.mag.value,
+                               name: "mag",
+                               timestamp: time};
+
+            this.$.logDoc.save('/logs/'+this.uid, null);
+        }
+      }
     });
   </script>
 </dom-module>

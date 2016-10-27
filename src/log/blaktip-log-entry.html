@@ -1,0 +1,99 @@
+
+
+<link rel="import" href="../shared-styles.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../../bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html">
+
+
+
+
+<dom-module id="blaktip-log-entry">
+  <template>
+    <style include="shared-styles">
+
+    </style>
+    <!-- <template is="dom-if" if="[[editable]]">
+      <h2> FORM STARTS HERE </h2>
+      <input is="iron-input"
+         bind-value="{{type}}">
+      </input>
+      <input is="iron-input"
+         bind-value="{{date}}">
+         </input>
+      <iron-autogrow-textarea
+         bind-value="{{description}}">
+      </iron-autogrow-textarea>
+    </template>
+ -->
+
+    <!-- <template is="dom-if" if="[[!editable]]"> -->
+    <!-- <div class="card"> -->
+      <!-- <paper-input value="[[logItem.type]]" id="type" disabled></paper-input>
+      <paper-input value="[[logItem.action]]" id="action" disabled></paper-input> -->
+      <!-- <div>[[type]]</div> -->
+
+     <b>[[type]]</b> on [[_getTimestampString(timestamp)]]
+      <hr>
+     <font style="font-size: 16px;">[[name]] : [[other]]</font>
+
+
+
+    <!-- </div> -->
+    <!-- </template> -->
+
+  </template>
+  <script>
+    Polymer({
+      is: 'blaktip-log-entry',
+
+      properties: {
+        editable: {
+          type: Boolean,
+          reflectToAttribute: true,
+          value: false
+        },
+        type: {
+          type: String,
+          notify: true,
+          value: ''
+        },
+        date: {
+          type: String,
+          notify: true,
+          value: ''
+        },
+        description: {
+          type: String,
+          notify: true,
+          value: ''
+        },
+        lastUpdated: {
+          type: Number,
+          value: 0
+        },
+        timestamp: {
+          type: Number,
+          value: 0
+        },
+      },
+
+      _getTimestampString: function(millis) {
+        var date = new Date(millis);
+         return date.toDateString()+' @ '+date.toLocaleTimeString();
+      },
+
+      emptyClass: function(content) {
+        return !content ? 'hidden' : '';
+      },
+      propertiesAreEmpty: function() {
+        for (var i = 0; i < arguments.length; ++i) {
+          if (arguments[i]) {
+            return false;
+          }
+        }
+        return true;
+      }
+    });
+  </script>
+</dom-module>
