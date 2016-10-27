@@ -57,14 +57,6 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
        --paper-badge-height: 15px;
       } 
 
-      paper-button.drawerItem {
-        font-family: 'Ubuntu', 'Roboto', sans-serif;
-        width: 100%;
-        text-align: left;
-        border-radius: 0px;
-        padding-left: 0px;
-      }
-
       paper-dialog.psuedoDrawer {
         font-family: 'Ubuntu', 'Roboto', sans-serif;
         border-radius: 0px;
@@ -89,6 +81,42 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
       paper-drawer-panel {
         z-index: 9999;
       }
+
+     /* paper-button {
+                --paper-button: { @apply(--layout-vertical); @apply(--layout-center-center);};
+
+      }*/
+
+      paper-button.sideMenuButton {
+        border-radius: 0;    
+       /*text-transform: none;  */
+        text-align: left;
+/*        width: 160px;
+*/        border-left: 0px solid gray;
+        margin-left: 0px;
+
+        /*--paper-button: { @apply(--layout-vertical); @apply(--layout-center-center);};*/
+        /*font-family: 'Ubuntu', 'Roboto', sans-serif;
+        text-align: left;
+        *//*padding-left: 0px;
+        text-transform: none;
+        border-radius: 0px;
+        border-right: -16px;*/
+       /* height: 40px;
+        border-left: 1px solid white;
+        width: 160px;*/
+/*        --paper-button: {
+          @apply(--layout-vertical);
+          @apply(--layout-center-center);
+          };
+        background: black;
+        color: white;
+        height: 100%;
+        border-radius: 0;      
+        border-left: 1px solid white;
+        margin-right: -16px;
+        width: 30px;
+*/      }
     </style>
     
 
@@ -118,16 +146,46 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
     
 
     <paper-dialog class="psuedoDrawer" id="leftDialog" on-iron-overlay-opened="patchOverlay" modal>
-       <div align="center">
-          <iron-image sizing="cover" class="userPic" src="[[user.photoURL]]"></iron-image>
-          <div><b>[[user.displayName]]</b></div>
+       <div align="left">
+          <div align="center"><iron-image sizing="cover" class="userPic" src="[[user.photoURL]]"></iron-image></div>
+          <div align="center"><b>[[user.displayName]]</b></div>
           <div align="center" style="font-size: 10px">[[user.email]]</div>
           <hr>
           <div>
-            <paper-button on-tap="_openNotificationsDialog" class="drawerItem"><iron-icon icon="feedback" item-icon></iron-icon>Notifications</paper-button>
-            <paper-button on-tap="_openDevicesDialog" class="drawerItem"><iron-icon icon="communication:phonelink-setup" item-icon></iron-icon>Device</paper-button>
-            <paper-button on-tap="_openPreferencesDialog" class="drawerItem"><iron-icon icon="settings" item-icon></iron-icon>Preferences</paper-button>
-            <paper-button class="drawerItem"><iron-icon icon="star" item-icon></iron-icon>Starred</paper-button>
+            <table border="0">
+                   <tr>
+                       <td>
+                       <iron-icon align="right" icon="feedback" item-icon></iron-icon>
+                       </td>
+                       <td>
+                       <paper-button class="sideMenuButton" on-tap="_openNotificationsDialog">Notifications</paper-button>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                       <iron-icon icon="communication:phonelink-setup" item-icon></iron-icon>
+                       </td>
+                       <td>
+                       <paper-button class="sideMenuButton" on-tap="_openDevicesDialog">Devices</paper-button>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                       <iron-icon icon="settings" item-icon></iron-icon>
+                       </td>
+                       <td>
+                       <paper-button class="sideMenuButton" on-tap="_openPreferencesDialog">Preferences</paper-button>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                       <iron-icon icon="av:play-circle-outline" item-icon></iron-icon>
+                       </td>
+                       <td>
+                       <paper-button class="sideMenuButton">Tutorials</paper-button>
+                       </td>
+                   </tr>
+            </table>
           </div>
           <hr>
           <div align="right"><paper-icon-button icon="hardware:keyboard-arrow-left" dialog-confirm>Tap me to close</paper-icon-button></div>
