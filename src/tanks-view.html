@@ -26,20 +26,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-   <!--  <firebase-query
-       id="query1"
-       app-name="blaktip"
-       path="/users/[[user.uid]]/tanks" 
-       data="{{data}}">
-    </firebase-query> -->
-
-    
-    <!-- <firebase-document
-           app-name="blaktip"
-           id="blaktipTanks"
-           path="/users/[[user.uid]]/tanks/"
-           data="{{tanksData}}">
-    </firebase-document> -->
 
     <firebase-document
            app-name="blaktip"
@@ -57,14 +43,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <firebase-document id="tankDoc" app-name="blaktip"></firebase-document>
     <firebase-document id="logDoc" app-name="blaktip"></firebase-document>
-
-    <!-- <firebase-query
-       id="logQuery"
-       app-name="blaktip"
-       path="/logs/[[user.uid]]" 
-       data="{{logData}}">
-    </firebase-query> -->
-
 
     <firebase-query
        id="tankQuery"
@@ -84,15 +62,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        aria-label="Add tank...">
     </paper-fab>
 
-    <paper-dialog id="addTankDialog" heading="Add a Tank" transition="core-transition-bottom" modal>
+    <paper-dialog id="addTankDialog" heading="Add a Tank" on-iron-overlay-opened="patchOverlay" transition="core-transition-bottom" modal>
       <form id="addForm" is="iron-form">
         <paper-input id="name" label="Name" value="{{tanksData2.name}}"></paper-input>
         <paper-input id="desc" label="Description" value="{{tanksData2.desc}}"></paper-input>
         <paper-input id="dateAdded" value="{{tanksData2.dateAdded}}" hidden></paper-input>
-        <!-- <paper-input id="logEntryType" value="{{logData.type}}" hidden></paper-input>
-        <paper-input id="logAction" value="{{logData.action}}" hidden></paper-input>
-        <paper-input id="logTimestamp" value="{{logData.timestamp}}" hidden></paper-input>
-       -->
       </form>
       <paper-button dialog-confirm autofocus on-click="addTank">Add</paper-button>
       <paper-button dialog-dismiss>Cancel</paper-button>
@@ -107,6 +81,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       behaviors: [
           Polymer.BlaktipTankBehavior
         ],
+
+      patchOverlay: function (e) {
+        if (e.target.withBackdrop) {
+         e.target.parentNode.insertBefore(e.target.backdropElement, e.target);
+        }
+      },
 
       _firebaseLoaded: function() {
       if(!this.tanksData) {

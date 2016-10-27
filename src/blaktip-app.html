@@ -32,8 +32,12 @@ Key IDs
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
 
 <link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+
 <link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
@@ -57,11 +61,12 @@ Key IDs
 
 <dom-module id="blaktip-app">
   <template>
-    <style include="shared-styles">
+    <style include="shared-styles" include="iron-flex iron-flex-alignment">
       :host {
-        --app-primary-color: black;
-        --app-secondary-color: black;
-
+        width: 100%;
+        --app-primary-color: white;
+        --app-secondary-color: white;
+        height: 1500px;
 
         @apply(--layout-horizontal);
         @apply(--layout-center);
@@ -82,15 +87,28 @@ Key IDs
 
       paper-header-panel {
         color: #fff;
+        width: 100%;
         background-color: var(--app-primary-color);
+        position: fixed;
+        z-index: 9999;
+      }
+
+      iron-pages {
+        width: 100%;
+        z-index: 2;
+        position: static;
       }
 
       paper-tabs {
+        position: fixed;
         background-color: black;
         --paper-tabs-selection-bar-color: var(--tabs-colour, white);
         color: var(--tabs-colour, white);
         height: 30px;
+        width: 100%;
+        z-index: 1;
       }
+
 
       paper-tab {
         font-family: 'Ubuntu', 'Roboto', sans-serif;
@@ -98,7 +116,7 @@ Key IDs
       }
 
       blaktip-toolbar {
-        z-index: 9999;
+        z-index: 9996;
       }
 
       app-header paper-icon-button {
@@ -126,6 +144,12 @@ Key IDs
 
         font-weight: bold;
       }
+
+      .content {
+        background-color: white;
+        padding-top: 15px;
+        height: 1500px;
+      }
     </style>
 
     <!-- <app-location route="{{route}}"></app-location>
@@ -151,26 +175,34 @@ Key IDs
        disabled="[[!online]]">
     </blaktip-login>
 
-    <blaktip-toolbar user="[[user]]" signed-in="[[signedIn]]" on-sign-out="signOut"></blaktip-toolbar>  
-    
-    <paper-tabs selected="{{selected}}">
+
+    <paper-header-panel mode="waterfall-tall">
+      <div class="paper-header">
+          <blaktip-toolbar user="[[user]]" signed-in="[[signedIn]]" on-sign-out="signOut"></blaktip-toolbar>  
+          <!-- </div>
+          <div class="content"> -->
+          <paper-tabs selected="{{selected}}">
             <paper-tab>Rooms</paper-tab>
             <paper-tab>Tanks</paper-tab>
             <paper-tab>Logs</paper-tab>
             <paper-tab>Livestock</paper-tab>
             <paper-tab>Analytics</paper-tab>
             <paper-tab>Community</paper-tab>
-    </paper-tabs>
+          </paper-tabs>
+    </div>
+    <div class="content">
+          <iron-pages selected="{{selected}}">
+            <div class="content"><rooms-view user="[[user]]"></rooms-view></div>
+            <div class="content"><tanks-view user="[[user]]"></tanks-view></div>
+            <div class="content"><logs-view user="[[user]]"></logs-view></div>
+            <div class="content"><livestock-view user="[[user]]"></livestock-view></div>
+            <div class="content"><analytics-view user="[[user]]"></analytics-view></div>
+            <div class="content">Wordpress Stuff Here</div>
+          </iron-pages>
+     </div>
+    </paper-header-panel> 
 
 
-    <iron-pages selected="{{selected}}">
-           <div><rooms-view user="[[user]]"></rooms-view></div>
-           <div><tanks-view user="[[user]]"></tanks-view></div>
-           <div><logs-view user="[[user]]"></logs-view></div>
-           <div><livestock-view user="[[user]]"></livestock-view></div>
-           <div><analytics-view user="[[user]]"></analytics-view></div>
-           <div>Wordpress Stuff Here</div>
-    </iron-pages>
   </template>
 
   <script>
@@ -182,7 +214,7 @@ Key IDs
       properties: {
         selected:{
           type: Number,
-          value: 1,
+          value: 0,
           notify: true,
           reflectToAttribute: true
         }

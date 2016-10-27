@@ -42,12 +42,6 @@
 
       /*td:hover {background-color: #f5f5f5}*/
 
-      .formatTable {
-        font-family: 'Ubuntu', 'Roboto', sans-serif;
-        align-self: center;
-        width: 100%;
-        border-spacing: 0px 0px;
-      }
 
       paper-dialog.tankSettings {
         width: 80%;
@@ -65,16 +59,6 @@
 
       .alert {
         color: red;
-      }
-
-      iron-icon.star {
-      --iron-icon-width: 16px;
-      --iron-icon-height: 16px;
-      color: var(--paper-amber-500);
-      }
-    
-      iron-icon.star:last-of-type { 
-      color: var(--paper-grey-500); 
       }
 
       .settingsDialog {
@@ -253,17 +237,17 @@
 
 <!-- START DIALOGS -->
        <!-- Settings Dialog -->
-       <paper-dialog class="tankSettings" id="settingsDialog" modal>
-       <div>
-         <paper-toolbar class="settingsDialog">
-           <h1 style="color: white">Edit settings for [[tank.name]]...</h1><br>
+       <paper-dialog class="tankSettings" id="settingsDialog" on-iron-overlay-opened="patchOverlay" modal>
+       <div >
+           <!-- <paper-toolbar title="Dan" class="settingsDialog"> -->
+           <div class="settingsDialog"><h1 style="color: white">Edit settings for [[tank.name]]...</h1>
            <paper-tabs selected="{{selected}}">
               <paper-tab>Measurements</paper-tab>
               <paper-tab>Alerts</paper-tab>
               <paper-tab>Thresholds</paper-tab>
               <paper-tab>Devices</paper-tab>
-           </paper-tabs>
-         </paper-toolbar>
+           </paper-tabs></div>
+           <!-- </paper-toolbar> -->
          
          <iron-pages selected="{{selected}}">
          <!-- Meaurements -->
@@ -321,7 +305,7 @@
        </paper-dialog>
 
 
-       <paper-dialog class="warningDialog" id="deleteDialog" modal>
+       <paper-dialog class="warningDialog" id="deleteDialog" on-iron-overlay-opened="patchOverlay">
        <h1 class="alert">Delete</h1>
        <p class="alert">Are you sure you want to delete [[tank.name]] from Blaktip?</p>
        <div>
@@ -330,7 +314,7 @@
        </div>
        </paper-dialog>
 
-       <paper-dialog id="editDialog" modal>
+       <paper-dialog id="editDialog" on-iron-overlay-opened="patchOverlay" modal>
        <h1>Edit Tank</h1>
        <p>EDIT FORM HERE</p>
        <div class="buttons">
@@ -338,7 +322,7 @@
        </div>
        </paper-dialog>
 
-       <paper-dialog id="lightingDialog" modal>
+       <paper-dialog id="lightingDialog" on-iron-overlay-opened="patchOverlay" modal>
        <h1>Lighting in Room</h1>
        <p>LIGHTING CONTROLS HERE</p>
        <div class="buttons">
@@ -346,7 +330,7 @@
        </div>
        </paper-dialog>
 
-       <paper-dialog id="camFeedDialog" modal>
+       <paper-dialog id="camFeedDialog" on-iron-overlay-opened="patchOverlay" modal>
        <h1>Web Camera Feed</h1>
        <p>FEED HERE: [[feed]]</p>
        <div class="buttons">
@@ -436,7 +420,11 @@
         'updateTextContent(title, body, temperature)'
       ],
  
-
+      patchOverlay: function (e) {
+        if (e.target.withBackdrop) {
+         e.target.parentNode.insertBefore(e.target.backdropElement, e.target);
+        }
+      },
 
       delete() {
         var time = new Date().getTime();

@@ -17,12 +17,6 @@
       position: relative;
       }
 
-      .formatTable {
-        align-self: center;
-        width: 100%;
-        border-spacing: 0px 0px;
-        padding-top: 0px;
-      }
     </style>
 
     <firebase-document
@@ -67,7 +61,7 @@
 
 
 
-       <paper-dialog id="settingsDialog" modal>
+       <paper-dialog id="settingsDialog" on-iron-overlay-opened="patchOverlay" modal>
        <h1>Room Settings</h1>
        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
        <div class="buttons">
@@ -184,6 +178,11 @@
             this.$.lightingDialog.open();
       },
 
+      patchOverlay: function (e) {
+        if (e.target.withBackdrop) {
+         e.target.parentNode.insertBefore(e.target.backdropElement, e.target);
+        }
+      },
 
       emptyClass(content, editable) {
         if (editable) {

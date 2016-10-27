@@ -30,8 +30,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style include="shared-styles">
       :host {
         display: block;
-
         padding: 10px;
+      }
+
+      paper-dialog {
+        z-index: 9999;
       }
     </style>
 
@@ -59,7 +62,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <blaktip-room key$="[[room.$key]]" uid="[[user.uid]]"></blaktip-room>
     </template>
     
-    <paper-dialog id="addRoomDialog" heading="Add a Room" transition="core-transition-bottom" modal>
+     <paper-dialog id="addRoomDialog" heading="Add a Room" on-iron-overlay-opened="patchOverlay" transition="core-transition-bottom" modal>
       <form id="addForm" is="iron-form">
         <paper-input id="name" label="Name" value="{{roomsData.name}}"></paper-input>
         <paper-input id="desc" label="Description" value="{{roomsData.desc}}"></paper-input>
@@ -85,8 +88,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       openDialog: function() {
          this.$.addRoomDialog.open();
+          // Polymer.dom(this.$).querySelector('addRoomDialog').open();
+          // console.log(this.$$('#leftDialog'));
+          // this.$$('#addRoomDialog').open();
+
       }, 
 
+
+      patchOverlay: function (e) {
+        if (e.target.withBackdrop) {
+         e.target.parentNode.insertBefore(e.target.backdropElement, e.target);
+        }
+      },
+      
       closeDialog: function() {
          this.$.addRoomDialog.close();
       }, 
