@@ -5,6 +5,9 @@
 <link rel="import" href="../../bower_components/iron-input/iron-input.html">
 <link rel="import" href="../../bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html">
 
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+
+
 
 
 
@@ -32,11 +35,9 @@
       <!-- <paper-input value="[[logItem.type]]" id="type" disabled></paper-input>
       <paper-input value="[[logItem.action]]" id="action" disabled></paper-input> -->
       <!-- <div>[[type]]</div> -->
-     <paper-header></paper-header>
-     <b>[[type]]</b> on [[_getTimestampString(timestamp)]]
-      <hr>
-     <font style="font-size: 16px;">[[name]] : [[other]]</font>
-
+     <paper-item>
+     [[type]] on [[_getTimestampString(timestamp)]]: [[name]] : [[other]]
+     </paper-item>
 
 
     <!-- </div> -->

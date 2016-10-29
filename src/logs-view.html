@@ -11,9 +11,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
+
 <link rel="import" href="../bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html">
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 
 <!-- <link rel="import" href="./blaktip-behavior.html"> -->
 <!-- <link rel="import" href="./log/blaktip-log-editor.html"> -->
@@ -36,17 +39,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        data="{{logData}}"
        limitToFirst="3">
     </firebase-query>
+    
 
-    <template is="dom-repeat" items="[[logData]]" as="logEntry" sort="_reverseSort">
-        <div class="logEntryCard">
-        <blaktip-log-entry 
+    <paper-card align="center" heading="Log Entries..." >
+       <paper-listbox>
+       <template is="dom-repeat" items="[[logData]]" as="logEntry" sort="_reverseSort">
+         <blaktip-log-entry 
              type="[[logEntry.action]] [[logEntry.type]]" 
              name="[[logEntry.name]]" 
              timestamp="[[logEntry.timestamp]]" 
              other="[[logEntry.other]]">
-        </blaktip-log-entry>
-        </div>
-    </template>
+        </blaktip-log-entry> 
+        </template>
+       </paper-listbox>
+    </paper-card>
+    
+    <div class="card-actions">
+      <paper-icon-button icon="communication:location-on" style="color:grey">Seattle</paper-icon-button>
+      <p>Campbell</p>
+    </div>
 
     <paper-fab
        icon="add"

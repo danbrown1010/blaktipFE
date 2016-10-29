@@ -13,6 +13,9 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
 
 
 <link rel="import" href="../bower_components/paper-badge/paper-badge.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+
 <link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
 
 
@@ -36,6 +39,7 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
         };
       }
 
+      
       p {
         font-size: 16px;
         flex-grow: 1;
@@ -78,45 +82,26 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
         border-radius: 50%;
       }
 
-      paper-drawer-panel {
-        z-index: 9999;
-      }
-
+      
      /* paper-button {
                 --paper-button: { @apply(--layout-vertical); @apply(--layout-center-center);};
 
       }*/
 
+     
+
       paper-button.sideMenuButton {
         border-radius: 0;    
-       /*text-transform: none;  */
         text-align: left;
-/*        width: 160px;
-*/        border-left: 0px solid gray;
+        border-left: 0px solid gray;
         margin-left: 0px;
+      }
 
-        /*--paper-button: { @apply(--layout-vertical); @apply(--layout-center-center);};*/
-        /*font-family: 'Ubuntu', 'Roboto', sans-serif;
-        text-align: left;
-        *//*padding-left: 0px;
-        text-transform: none;
-        border-radius: 0px;
-        border-right: -16px;*/
-       /* height: 40px;
-        border-left: 1px solid white;
-        width: 160px;*/
-/*        --paper-button: {
-          @apply(--layout-vertical);
-          @apply(--layout-center-center);
-          };
-        background: black;
-        color: white;
-        height: 100%;
-        border-radius: 0;      
-        border-left: 1px solid white;
-        margin-right: -16px;
-        width: 30px;
-*/      }
+      .horizontal-section {
+      padding: 0px;
+      width: 100%;
+    }
+
     </style>
     
 
@@ -146,50 +131,32 @@ Copyright (c) 2016 Blaktip Author - Dan Brown. All rights reserved.
     
 
     <paper-dialog class="psuedoDrawer" id="leftDialog" on-iron-overlay-opened="patchOverlay" modal>
-       <div align="left">
           <div align="center"><iron-image sizing="cover" class="userPic" src="[[user.photoURL]]"></iron-image></div>
           <div align="center"><b>[[user.displayName]]</b></div>
           <div align="center" style="font-size: 10px">[[user.email]]</div>
           <hr>
-          <div>
-            <table border="0">
-                   <tr>
-                       <td>
-                       <iron-icon align="right" icon="feedback" item-icon></iron-icon>
-                       </td>
-                       <td>
-                       <paper-button class="sideMenuButton" on-tap="_openNotificationsDialog">Notifications</paper-button>
-                       </td>
-                   </tr>
-                   <tr>
-                       <td>
-                       <iron-icon icon="communication:phonelink-setup" item-icon></iron-icon>
-                       </td>
-                       <td>
-                       <paper-button class="sideMenuButton" on-tap="_openDevicesDialog">Devices</paper-button>
-                       </td>
-                   </tr>
-                   <tr>
-                       <td>
-                       <iron-icon icon="settings" item-icon></iron-icon>
-                       </td>
-                       <td>
-                       <paper-button class="sideMenuButton" on-tap="_openPreferencesDialog">Preferences</paper-button>
-                       </td>
-                   </tr>
-                   <tr>
-                       <td>
-                       <iron-icon icon="av:play-circle-outline" item-icon></iron-icon>
-                       </td>
-                       <td>
-                       <paper-button class="sideMenuButton">Tutorials</paper-button>
-                       </td>
-                   </tr>
-            </table>
+          <div align="left">
+          <paper-listbox class="horizontal-section">
+            <paper-item on-tap="_openNotificationsDialog">
+               <iron-icon icon="feedback" item-icon></iron-icon>
+               Notifications
+            </paper-item>
+            <paper-item on-tap="_openDevicesDialog">
+               <iron-icon icon="communication:phonelink-setup" item-icon></iron-icon>
+               Devices
+            </paper-item>
+            <paper-item on-tap="_openPreferencesDialog">
+               <iron-icon icon="settings" item-icon></iron-icon>
+               Preferences
+            </paper-item>
+            <paper-item on-tap="_openNotificationsDialog">
+               <iron-icon icon="av:play-circle-outline" item-icon></iron-icon>
+               Tutorials
+            </paper-item>
+          </paper-listbox>
           </div>
           <hr>
-          <div align="right"><paper-icon-button icon="hardware:keyboard-arrow-left" dialog-confirm>Tap me to close</paper-icon-button></div>
-       </div>
+          <div align="right"><paper-icon-button icon="hardware:keyboard-arrow-left" dialog-confirm></paper-icon-button></div>
     </paper-dialog>
 
 
