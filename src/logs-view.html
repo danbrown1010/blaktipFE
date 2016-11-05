@@ -13,12 +13,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-input/iron-input.html">
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 
-<link rel="import" href="../bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html">
+<!-- <link rel="import" href="../bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html"> -->
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 
-<!-- <link rel="import" href="./blaktip-behavior.html"> -->
+<link rel="import" href="./blaktip-behavior.html">
 <!-- <link rel="import" href="./log/blaktip-log-editor.html"> -->
 <link rel="import" href="./log/blaktip-log-entry.html">
 
@@ -75,13 +75,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       behaviors: [Polymer.BlaktipAppBehavior],
 
-      get logEntriesPath() {
-        return '/logEntries/' + this.user.uid;
-      },
+      // get logEntriesPath() {
+      //   return '/logEntries/' + this.user.uid;
+      // },
 
-      toEditableId: function(noteId) {
-        return this.logEntriesPath + '/' + logId;
-      },
+      // toEditableId: function(noteId) {
+      //   return this.logEntriesPath + '/' + logId;
+      // },
 
       _openAddLogEntryDialog: function() {
         this.$.addLogEntryDialog.open();

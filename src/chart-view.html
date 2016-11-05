@@ -1,0 +1,143 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/nvd3-elements/nvd3-donut.html">
+<link rel="import" href="../bower_components/nvd3-elements/nvd3-line.html">
+<link rel="import" href="../bower_components/nvd3-elements/nvd3-shared-styles.html">
+<link rel="import" href="../bower_components/nvd3-elements/nvd3-multi-bar.html">
+
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+
+<link rel="import" href="../bower_components/google-apis/google-client-loader.html">
+
+
+
+
+<dom-module id="chart-view">
+  <template>
+  <style include="nvd3-shared-styles">
+    .donuts {
+        font-family: 'Ubuntu', 'Roboto', sans-serif;
+        font-size: 10px;
+        background-color: white;
+        color: white;
+        margin: 10px;
+        padding-left: 25px;
+      }
+  </style>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+
+  <google-client-loader id="bigquery" name="bigquery" version="v2">
+  </google-client-loader>
+  
+  <paper-card class="donuts">
+     <p style="color: black;"> Temperature Graph from Big Query</p>
+     <paper-icon-button align="right" style="color: black;" on-tap="auth" icon="account-circle"></paper-icon-button>
+     <paper-icon-button align="right" style="color: black;" on-tap="runQuery" icon="backup"></paper-icon-button>
+  
+  <nvd3-line id="chart1" 
+    flexSize="true"
+    height="400"
+    width="700"
+    viewBoxWidth="600"
+    viewBoxHeight="250"
+    show-legend 
+    use-interactive-guideline
+    auto-resize 
+    no-data="No Data Available!">
+  </nvd3-line>
+
+
+     <textarea id="output" width="600" value="{{outputValue::input}}"></textarea>
+     </paper-card>
+    <!-- <p style="color: black;"> Hello World from <span id="name">{{greeting}}</span>!</p> -->
+  
+<!-- <nvd3-multi-bar id="barChart" height="400" width="700" auto-resize show-legend></nvd3-multi-bar> -->
+
+
+
+
+  
+  </template>
+  <script>
+    Polymer({
+      is: 'chart-view',
+
+      // ready: function() {
+      //   this.runQuery();
+      // },
+
+
+      runQuery: function() {
+        var txtArea = this.$.output;
+        var chart = this.$.chart1;
+        var chart2 = this.$.barChart;
+        var request = gapi.client.bigquery.jobs.query({
+            'projectId': 'sixth-tempo-89216',
+            'timeoutMs': '30000',
+            'query': 'SELECT state, AVG(mother_age) AS theav FROM [publicdata:samples.natality] WHERE year=2000 AND ever_born=1 GROUP BY state ORDER BY theav DESC;'
+        });
+
+        // request.execute(function(response) {     
+        //   console.log(response);
+        //   // var stateValues = [["State", "Age"]];
+        //   var stateLineValues = [];
+        //   var stateBarValues =[];
+        //   $.each(response.result.rows, function(i, item) {
+        //     var state = item.f[0].v;
+        //     var age = parseFloat(item.f[1].v);
+        //     stateLineValues.push({x: i, y: age});
+        //     stateBarValues.push({x: state, y: age});
+        //     console.log(state.toString()+":"+age.toString());
+            
+        // });
+        // txtArea.textContent = JSON.stringify(stateLineValues);
+        // chart.data = [{ values : stateLineValues,
+        //                 key: 'State Age Curve',
+        //                 color: '#ff7f0e'}];
+        // chart2.data = [{ values : stateBarValues,
+        //                  key: 'Age By State'}];
+        // });
+// Query temperature tables
+        var request = gapi.client.bigquery.jobs.query({
+            'projectId': 'sixth-tempo-89216',
+            'timeoutMs': '30000',
+            'query': 'SELECT value FROM [sixth-tempo-89216:measurements.stream] WHERE uID="12345678adfre543JKOesdaSS4" AND containerId="1231431fsgGDehbfdsJDSS" AND type="temp" ORDER BY timestamp'
+        });
+        request.execute(function(response) {   
+          console.log(response);
+          var tempArr = [];
+          $.each(response.result.rows, function(i, item) {
+            var value = parseFloat(item.f[0].v);
+            tempArr.push({x: i, y: value}); 
+            console.log(value);
+          });
+        
+       txtArea.textContent = JSON.stringify(tempArr);
+       chart.data = [{values : tempArr,
+                      key: 'Tank Temperature...',
+                      color: '#ff7f0e'}];
+       });
+      },
+
+      auth: function() {
+        var project_id = 'sixth-tempo-89216';
+        var client_id = '20932329407-ks1vrumcmir29vpb1bk91irf5qptct3t.apps.googleusercontent.com';
+
+        var config = {
+          'client_id': client_id,
+          'scope': 'https://www.googleapis.com/auth/bigquery'
+        };
+        gapi.auth.authorize(config, function() {
+        gapi.client.load('bigquery', 'v2', this.runQuery);
+        $('#client_initiated').html('BigQuery client initiated');
+        });
+        $('#auth_button').hide();
+       }
+
+
+
+
+    });
+   </script>
+</dom-module>

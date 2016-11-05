@@ -87,11 +87,25 @@
         return Promise.resolve();
       },
 
-      // signIn: function() {
-      //    this.$.auth.signInWithPopup();
-      // },
+      signIn: function() {
+        console.log("Sign in with popup...");
+         this.$.auth.signInWithPopup();
+         var project_id = 'sixth-tempo-89216';
+        var client_id = '20932329407-ks1vrumcmir29vpb1bk91irf5qptct3t.apps.googleusercontent.com';
+
+        var config = {
+          'client_id': client_id,
+          'scope': 'https://www.googleapis.com/auth/bigquery'
+        };
+        gapi.auth.authorize(config, function() {
+        gapi.client.load('bigquery', 'v2', null);
+        $('#client_initiated').html('BigQuery client initiated');
+        });
+        $('#auth_button').hide();
+      },
 
       signOut: function() {
+        console.log("Sign out!");
         if (this.$.auth) {
           this.$.auth.signOut();
         }

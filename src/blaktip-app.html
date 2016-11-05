@@ -33,6 +33,8 @@ Key IDs
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/nvd3-elements/nvd3-shared-styles.html">
+
 
 
 <link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
@@ -44,6 +46,7 @@ Key IDs
 <link rel="import" href="../bower_components/paper-tabs/paper-tab.html">
 <link rel="import" href="../bower_components/app-storage/app-indexeddb-mirror/app-indexeddb-mirror.html">
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="../bower_components/google-apis/google-client-loader.html">
 
 
 <link rel="import" href="blaktip-icons.html">
@@ -52,16 +55,19 @@ Key IDs
 <link rel="import" href="tanks-view.html">
 <link rel="import" href="logs-view.html">
 <link rel="import" href="livestock-view.html">
-<link rel="import" href="analytics-view.html">
+<!-- <link rel="import" href="analytics-view.html"> -->
+<link rel="import" href="chart-view.html">
+
 <link rel="import" href="blaktip-toolbar.html">
 <link rel="import" href="blaktip-login.html">
 <link rel="import" href="blaktip-behavior.html">
 <link rel="import" href="shared-styles.html">
 
 
+
 <dom-module id="blaktip-app">
   <template>
-    <style include="shared-styles" include="iron-flex iron-flex-alignment">
+    <style include="shared-styles iron-flex iron-flex-alignment nvd3-shared-styles">
       :host {
         width: 100%;
         --app-primary-color: white;
@@ -175,12 +181,40 @@ Key IDs
        disabled="[[!online]]">
     </blaktip-login>
 
+    <google-client-loader id="bigquery" name="bigquery" version="v2">
+  </google-client-loader>
 
-    <paper-header-panel mode="waterfall-tall">
+<blaktip-toolbar user="[[user]]" signed-in="[[signedIn]]" on-sign-out="signOut"></blaktip-toolbar>
+<paper-tabs selected="{{selected}}">
+            <paper-tab>Rooms</paper-tab>
+            <paper-tab>Tanks</paper-tab>
+            <paper-tab>Logs</paper-tab>
+            <paper-tab>Livestock</paper-tab>
+            <paper-tab>Analytics</paper-tab>
+            <paper-tab>Community</paper-tab>
+          </paper-tabs>
+    </div>
+    <div class="content">
+          <iron-pages selected="{{selected}}">
+            <div class="content"><rooms-view user="[[user]]"></rooms-view></div>
+            <div class="content"><tanks-view user="[[user]]"></tanks-view></div>
+            <div class="content"><logs-view user="[[user]]"></logs-view></div>
+            <div class="content"><livestock-view user="[[user]]"></livestock-view></div>
+            <div class="content"><chart-view user="[[user]]" greeting="Hello!"></chart-view></div>
+            <div class="content">Wordpress Stuff Here</div>
+          </iron-pages>
+     </div>
+
+
+
+
+
+
+
+
+    <!-- <paper-header-panel mode="waterfall-tall">
       <div class="paper-header">
           <blaktip-toolbar user="[[user]]" signed-in="[[signedIn]]" on-sign-out="signOut"></blaktip-toolbar>  
-          <!-- </div>
-          <div class="content"> -->
           <paper-tabs selected="{{selected}}">
             <paper-tab>Rooms</paper-tab>
             <paper-tab>Tanks</paper-tab>
@@ -196,11 +230,11 @@ Key IDs
             <div class="content"><tanks-view user="[[user]]"></tanks-view></div>
             <div class="content"><logs-view user="[[user]]"></logs-view></div>
             <div class="content"><livestock-view user="[[user]]"></livestock-view></div>
-            <div class="content"><analytics-view user="[[user]]"></analytics-view></div>
+            <div class="content"><chart-view user="[[user]]" greeting="Hello!"></chart-view></div>
             <div class="content">Wordpress Stuff Here</div>
           </iron-pages>
      </div>
-    </paper-header-panel> 
+    </paper-header-panel>  -->
 
 
   </template>
@@ -220,9 +254,10 @@ Key IDs
         }
       },
 
-      signIn: function() {
-         this.$.auth.signInWithPopup();
-      }
+      // signIn: function() {
+      //    console.log("Sign in with popup...");
+      //    this.$.auth.signInWithPopup();
+      // }
 
 
       /*observers: [
