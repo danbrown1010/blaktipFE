@@ -8,6 +8,7 @@
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 
 <link rel="import" href="../bower_components/google-apis/google-client-loader.html">
+<link rel="import" href="../bower_components/google-chart/google-chart.html">
 
 
 
@@ -17,6 +18,7 @@
   <style include="nvd3-shared-styles">
     .donuts {
         font-family: 'Ubuntu', 'Roboto', sans-serif;
+        border-radius: 5px;
         font-size: 10px;
         background-color: white;
         color: white;
@@ -24,40 +26,83 @@
         padding-left: 25px;
       }
   </style>
-  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 
 
   <google-client-loader id="bigquery" name="bigquery" version="v2">
   </google-client-loader>
-  
-  <paper-card class="donuts">
-     <p style="color: black;"> Temperature Graph from Big Query</p>
-     <paper-icon-button align="right" style="color: black;" on-tap="auth" icon="account-circle"></paper-icon-button>
-     <paper-icon-button align="right" style="color: black;" on-tap="runQuery" icon="backup"></paper-icon-button>
-  
-  <nvd3-line id="chart1" 
-    flexSize="true"
+  <div>
+  <paper-icon-button align="right" style="color: black;" on-tap="auth" icon="account-circle"></paper-icon-button>
+  <paper-icon-button align="right" style="color: black;" on-tap="runQuery" icon="backup"></paper-icon-button>
+  </div>
+  <div>
+<paper-card class="donuts">
+  <h3 style="color: black;"> Temperatures...</h3>
+  <google-chart
+    type="area"
     height="400"
-    width="700"
-    viewBoxWidth="600"
-    viewBoxHeight="250"
+    width="400"
+    options='{"title": "Today", "hAxis": {"title": "TIME"}, "vAxis": {"title": "TEMPERATURE (°F)"}, "legend": "none", "animation": {"duration": "1000"}}'
+    id="dayChart">
+   </google-chart>
+   <google-chart
+    type="area"
+    height="400"
+    width="400"
+    options='{"title": "Week", "hAxis": {"title": "TIME"}, "vAxis": {"title": "TEMPERATURE (°F)"}, "legend": "none"}'
+    id="weekChart">
+   </google-chart>
+ </paper-card>
+ <paper-card class="donuts">
+    <h3 style="color: black;"> Chemistry...</h3>
+    <google-chart
+    type="column"
+    height="400"
+    width="400"
+    options='{"title": "Weekly"}'
+    data='[["Element", "Target", "Actuals"],
+           ["Calcium", 400, 443],
+           ["Boron", 300, 460],
+           ["Silica", 100, 33],
+           ["Phosphates", 300, 540],
+           ["Iron", 300, 250],
+           ["Magnesium",300, 150]]'>
+  </google-chart>
+  <google-chart
+    type="column"
+    height="400"
+    width="400"
+    options='{"title": "Monthly"}'
+    data='[["Element", "Target", "Actuals"],
+           ["Calcium", 400, 443],
+           ["Boron", 300, 460],
+           ["Silica", 100, 33],
+           ["Phosphates", 300, 540],
+           ["Iron", 300, 250],
+           ["Magnesium",300, 150]]'>>
+   </google-chart>
+ </paper-card>
+
+  <!-- <paper-card class="donuts">
+  <p style="color: black;"> Temperature Graph from Big Query</p>   
+  <nvd3-line 
+    id="chart1" 
+    flexSize="true"
+    height="200"
+    width="500"
     show-legend 
     use-interactive-guideline
     auto-resize 
     no-data="No Data Available!">
   </nvd3-line>
-
-
-     <textarea id="output" width="600" value="{{outputValue::input}}"></textarea>
-     </paper-card>
+  <textarea id="output" width="600" value="{{outputValue::input}}"></textarea>
+  </paper-card> -->
     <!-- <p style="color: black;"> Hello World from <span id="name">{{greeting}}</span>!</p> -->
   
 <!-- <nvd3-multi-bar id="barChart" height="400" width="700" auto-resize show-legend></nvd3-multi-bar> -->
+ 
+  </div>
 
-
-
-
-  
   </template>
   <script>
     Polymer({
@@ -72,11 +117,13 @@
         var txtArea = this.$.output;
         var chart = this.$.chart1;
         var chart2 = this.$.barChart;
-        var request = gapi.client.bigquery.jobs.query({
-            'projectId': 'sixth-tempo-89216',
-            'timeoutMs': '30000',
-            'query': 'SELECT state, AVG(mother_age) AS theav FROM [publicdata:samples.natality] WHERE year=2000 AND ever_born=1 GROUP BY state ORDER BY theav DESC;'
-        });
+        var dayChart = this.$.dayChart;
+        var weekChart = this.$.weekChart;
+        // var request = gapi.client.bigquery.jobs.query({
+        //     'projectId': 'sixth-tempo-89216',
+        //     'timeoutMs': '30000',
+        //     'query': 'SELECT state, AVG(mother_age) AS theav FROM [publicdata:samples.natality] WHERE year=2000 AND ever_born=1 GROUP BY state ORDER BY theav DESC;'
+        // });
 
         // request.execute(function(response) {     
         //   console.log(response);
@@ -102,21 +149,35 @@
         var request = gapi.client.bigquery.jobs.query({
             'projectId': 'sixth-tempo-89216',
             'timeoutMs': '30000',
-            'query': 'SELECT value FROM [sixth-tempo-89216:measurements.stream] WHERE uID="12345678adfre543JKOesdaSS4" AND containerId="1231431fsgGDehbfdsJDSS" AND type="temp" ORDER BY timestamp'
+            'query': 'SELECT value,timestamp FROM [sixth-tempo-89216:measurements.stream] WHERE uId="wSVuDv51X4Xxn4K2hncytcfG3n43" AND containerId="-KV18todvAcotwk0PgcC" AND type="temp" ORDER BY timestamp'
         });
         request.execute(function(response) {   
           console.log(response);
           var tempArr = [];
+          var tempGArr = [];
+          tempGArr.push(["Time", "Temperatrure"])
           $.each(response.result.rows, function(i, item) {
             var value = parseFloat(item.f[0].v);
+            var date = new Date(parseFloat(item.f[1].v));
+            
+            var hours = date.getHours();
+            var mins = date.getMinutes();
+            var timeStr = hours+":"+mins;
+
             tempArr.push({x: i, y: value}); 
+            tempGArr.push([timeStr, value]);
             console.log(value);
           });
         
-       txtArea.textContent = JSON.stringify(tempArr);
-       chart.data = [{values : tempArr,
-                      key: 'Tank Temperature...',
-                      color: '#ff7f0e'}];
+       // txtArea.textContent = JSON.stringify(tempArr);
+       // chart.xAxis.axisLabel('Time (ms)')
+       // chart.xAxisLabels = {"0": "Hour 0","360": "Hour 1","720": "Hour 2","1080": "Hour 3","1440": "Hour 4"};
+       // chart.data = [{values : tempArr,
+       //                key: 'Tank Temperature',
+       //                color: '#ff7f0e'}];
+       dayChart.data = tempGArr;
+       weekChart.data = tempGArr;
+
        });
       },
 
